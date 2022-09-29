@@ -12,11 +12,11 @@ const Contacts: FC<IContactsProps> = () => {
             <div className='social_media'>
                 <div className='instagram'>
                     <div className='logo'></div>
-                    <a href='/'>@lavalent.eu</a>
+                    <a href='/' className='contact_links'>@lavalent.eu</a>
                 </div>
                 <div className='telegram'>
                     <div className='logo'></div>
-                    <a href='/'>Телеграм</a>
+                    <a href='/' className='contact_links'>Телеграм</a>
                     </div>
             </div>
         </div>

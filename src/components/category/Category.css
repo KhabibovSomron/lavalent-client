@@ -1,0 +1,23 @@
+.category {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.category_container {
+    display: flex;
+    margin-top: 32px;
+}
+
+.category_links {
+    padding: 0 24px 8px;
+    font-size: 18px;
+    line-height: 32px;
+    text-decoration: none;
+    color: var(--secondary_color);
+}
+
+.category_links:hover {
+    color: var(--text_color);
+}

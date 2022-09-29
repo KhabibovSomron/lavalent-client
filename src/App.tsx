@@ -1,5 +1,6 @@
 import { FC } from "react"
 import './App.css'
+import Category from "./components/category/Category";
 import Contacts from "./components/contacts/Contacts";
 import Header from "./components/header/Header";
 
@@ -11,6 +12,7 @@ interface IAppProps {
 const App: FC<IAppProps> = () => {
   return (
     <div className="App">
+      <div className="background_block"></div>
       <div className="app_main_container">
         <Header />
         <div className="app_svg_icon">
@@ -19,6 +21,7 @@ const App: FC<IAppProps> = () => {
       </div>
       
       <Contacts />
+      <Category />
     </div>
   )
 }
