@@ -1,0 +1,49 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #EFEFEF;
+}
+
+.footer_container {
+    margin: 32px 16px;
+}
+
+.media {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.media > div {
+    margin: 0 12px 10px;
+}
+
+.copyright {
+    color: #757575;
+    font-size: 14px;
+    font-weight: 400px;
+    line-height: 1.4em;
+}
+
+.copyright_store {
+    padding-right: 8px;
+}
+
+.copyright_store::after {
+    content: "\00b7";
+    padding-left: 8px;
+    font-size: initial;
+    font-weight: 600;
+}
+
+.copyright_abuse_report > a {
+    color: #1a7ac4;
+    text-decoration: none;
+}
+
+.copyright_abuse_report > a:hover {
+    color: #757575;
+    cursor: pointer;
+}

@@ -1,8 +1,13 @@
 import { FC } from "react"
 import './App.css'
+import About from "./components/about/About";
+import Address from "./components/address/Address";
 import Category from "./components/category/Category";
 import Contacts from "./components/contacts/Contacts";
+import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+import Info from "./components/info/Info";
+import Adapter from "./components/routes/Adapter";
 
 
 interface IAppProps {
@@ -22,6 +27,11 @@ const App: FC<IAppProps> = () => {
       
       <Contacts />
       <Category />
+      <Adapter />
+      <About />
+      <Info />
+      <Address />
+      <Footer />
     </div>
   )
 }

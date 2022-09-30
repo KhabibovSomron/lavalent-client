@@ -1,0 +1,28 @@
+.info {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+
+.info_container {
+    padding: 32px 16px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 768px;
+}
+
+.info_container > h2 {
+    line-height: 1.3em;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 16px;
+}
+
+.info_description > p {
+    line-height: 1.8em;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 16px 0;
+}

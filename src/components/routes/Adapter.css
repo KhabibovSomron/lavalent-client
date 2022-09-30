@@ -1,0 +1,47 @@
+.adapter { 
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+    flex-direction: column;
+    border-bottom: 3px solid #e6e6e6;
+}
+
+.favourites {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0 20px;
+}
+
+.favourites_button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.favourites_icon {
+    stroke: #757575;
+    stroke-width: 0;
+    width: 22px;
+    height: 20px;
+}
+
+.favourites_link {
+    color: #757575;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.favourites_button:hover {
+    cursor: pointer;
+}
+
+.favourites_button:hover .favourites_link {
+    color: var(--text_color);
+}
+
+.favourites_button:hover .favourites_icon {
+    stroke: var(--text_color);
+}

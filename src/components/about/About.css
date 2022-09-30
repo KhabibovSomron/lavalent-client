@@ -1,0 +1,39 @@
+.about {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    padding: 32px 0;
+}
+
+.about_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.about_container > h2 {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 16px;
+}
+
+.about_description {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+}
+
+.about_description > p {
+    max-width: 608px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8em;
+    margin: 0;
+}
+
+.about_logo {
+    width: 144px;
+    height: 144px;
+    margin-top: 8px;
+    margin-left: 32px;
+}
