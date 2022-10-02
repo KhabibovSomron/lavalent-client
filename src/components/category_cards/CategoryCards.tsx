@@ -1,4 +1,7 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
+import { BASE_URL } from '../../redux/requests/endpoints';
+import { fetchCategories } from '../../redux/requests/ProductRequests';
 import Card from '../card/Card';
 import './CategoryCards.css'
 
@@ -8,12 +11,14 @@ interface ICategoryCardsProps {
 }
 
 const CategoryCards: FC<ICategoryCardsProps> = () => {
+
+    const categories = useAppSelector(state => state.categoryList.categories)
+
     return (
         <div className='category_cards'>
-            <Card image_link='http://localhost:8000/images/category/bags_category_o67lM6t.jpg' title='Bags (Сумки)' />
-            <Card image_link='../../images/shoes_category.jpg' title='Shoes (Обувь)' />
-            <Card image_link="D:\Projects\Work\lavalent-client\src\images\accessories_category.png" title='Accessories (Аксессуары)' />
-
+            {categories.map((category, index) => 
+                <Card image_link={category.image} title={category.title} key={index} />
+            )}
         </div>
     )
 }

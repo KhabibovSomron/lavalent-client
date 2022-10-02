@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useAppSelector } from '../../hooks/ReduxHooks'
 import './Category.css'
 
 
@@ -7,12 +8,15 @@ interface ICategoryProps {
 }
 
 const Category: FC<ICategoryProps> = () => {
+
+    const categories = useAppSelector(state => state.categoryList.categories)
+
     return (
         <div className='category'>
             <div className="category_container">
-                <a href='/' className='category_links'>Bags (Сумки)</a>
-                <a href='/' className='category_links'>Shoes (Обувь)</a>
-                <a href='/' className='category_links'>Accessories (Аксессуары)</a>
+                {categories.map((category, index) => 
+                    <a href={`/${category.url}/`} className='category_links' key={index}>{category.title}</a>
+                )}
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { BrowserRouter } from "react-router-dom";
 import './App.css'
 import About from "./components/about/About";
@@ -9,6 +9,8 @@ import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import Info from "./components/info/Info";
 import Adapter from "./components/routes/Adapter";
+import { useAppDispatch } from "./hooks/ReduxHooks";
+import { fetchCategories } from "./redux/requests/ProductRequests";
 
 
 interface IAppProps {
@@ -16,6 +18,13 @@ interface IAppProps {
 }
 
 const App: FC<IAppProps> = () => {
+
+  const dispatch = useAppDispatch()
+    
+  useEffect(() => {
+      dispatch(fetchCategories())
+  }, [])
+
   return (
     <div className="App">
       <div className="background_block"></div>
