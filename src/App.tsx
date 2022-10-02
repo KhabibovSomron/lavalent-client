@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { BrowserRouter } from "react-router-dom";
 import './App.css'
 import About from "./components/about/About";
 import Address from "./components/address/Address";
@@ -27,7 +28,9 @@ const App: FC<IAppProps> = () => {
       
       <Contacts />
       <Category />
-      <Adapter />
+      <BrowserRouter>
+        <Adapter />
+      </BrowserRouter>
       <About />
       <Info />
       <Address />

@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import { FC } from 'react';
 import CategoryCards from '../category_cards/CategoryCards';
-import './Adapter.css'
+import './Adapter.css';
+import { Routes, Route } from 'react-router-dom';
 
 
 interface IAdapterProps {
@@ -11,7 +12,9 @@ const Adapter: FC<IAdapterProps> = () => {
     return (
         <div className='adapter'>
             <div className="adapter_contaiter">
-                <CategoryCards />
+                <Routes>
+                    <Route path='/' element={<CategoryCards />} />
+                </Routes>
             </div>
             <div className='favourites'>
                 <div className="favourites_button">
