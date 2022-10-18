@@ -1,7 +1,6 @@
-import { FC, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks';
-import { BASE_URL } from '../../redux/requests/endpoints';
-import { fetchCategories } from '../../redux/requests/ProductRequests';
+import { FC } from 'react'
+import { Link } from 'react-router-dom';
+import {  useAppSelector } from '../../hooks/ReduxHooks';
 import Card from '../card/Card';
 import './CategoryCards.css'
 
@@ -17,7 +16,7 @@ const CategoryCards: FC<ICategoryCardsProps> = () => {
     return (
         <div className='category_cards'>
             {categories.map((category, index) => 
-                <Card image_link={category.image} title={category.title} key={index} />
+               <Link to={`/${index}/brands/`} key={index} className="links"><Card image_link={category.image} title={category.title}/></Link> 
             )}
         </div>
     )

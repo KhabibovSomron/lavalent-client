@@ -3,12 +3,12 @@ import './Contacts.css'
 
 
 interface IContactsProps {
-
+    contactRef: any
 }
 
-const Contacts: FC<IContactsProps> = () => {
+const Contacts: FC<IContactsProps> = ({contactRef}) => {
     return (
-        <div className='contacts'>
+        <div className='contacts' ref={contactRef}>
             <div className='social_media'>
                 <div className='instagram'>
                     <div className='logo'></div>

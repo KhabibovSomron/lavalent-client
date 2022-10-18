@@ -1,4 +1,4 @@
-.brands {
+.productlist {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -8,7 +8,7 @@
     margin: 0 auto;
 }
 
-.brands > h1 {
+.productlist > h1 {
     font-size: 30px;
     color: black;
     font-weight: 600;
@@ -16,14 +16,10 @@
     margin: 0 0 5px;
 }
 
-.brands_container {
+.products_container {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
     padding: 20px 0 32px;
-}
-
-.brand_links {
-    text-decoration: none;
 }

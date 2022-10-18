@@ -1,0 +1,30 @@
+.brand_card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.brand_card_logo {
+    font-size: 80px;
+    font-weight: 800;
+    transition: all .3s;
+    padding: 80px 0;
+}
+
+.brand_card:hover .brand_card_logo {
+    transform: scale(1.05);
+}
+
+.brand_card_title {
+    font-size: 30px;
+    line-height: 1.3em;
+    transition: all .3s;
+
+}
+
+.brand_card:hover .brand_card_title {
+    transform: translateY(-20%);
+    color: var(--text_color);
+}

@@ -34,21 +34,30 @@
     list-style-type: none;
 }
 
-.header_menu_links {
+.header_menu_items {
     display: inline;
     padding: 0 10px;
+    text-decoration: none;
 }
 
-.header_menu_links > a {
-    text-decoration: none;
+.header_menu_links {
     color: var(--text_color);
     font-size: 16px;
     font-weight: 600;
     line-height: 1.3em;
 }
 
-.header_menu_links > a:hover {
+.header_menu_links:hover {
     opacity: 0.6;
+    cursor: pointer;
+}
+
+.span_link {
+    text-decoration: none;
+    color: var(--text_color);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3em;
 }
 
 .header_search {

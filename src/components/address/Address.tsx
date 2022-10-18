@@ -1,27 +1,23 @@
 import { FC } from 'react'
 import './Address.css'
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api'
+import Map from '../map/Map'
 
 interface IAddressProps {
-
+    addressRef: any
 }
-const API_KEY = "AIzaSyAdZRImXBFhVEvu36famint6i4aCxvSeb0"
-const Address: FC<IAddressProps> = () => {
-    const { isLoaded } = useLoadScript({googleMapsApiKey: API_KEY})
+
+const Address: FC<IAddressProps> = ({addressRef}) => {
+
     
-    if (!isLoaded) {
-        return (
-            <div>Loading...</div>
-        )
-    }
+
 
     return(
-        <div className='address'>
+        <div className='address' ref={addressRef}>
             <div className="address_container">
                 <h2>Адрес</h2>
                 <div className="layout">
                     <div className="address_map">
-
+                        <Map />
                     </div>
                     <div className="text">
                         <div className='description'>

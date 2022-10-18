@@ -1,4 +1,9 @@
 .category_cards {
     display: flex;
     padding-bottom: 32px;
+    margin: 0 auto;
+}
+
+.links {
+    text-decoration: none;
 }

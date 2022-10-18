@@ -1,0 +1,18 @@
+.breadcrumbs {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.breadcrumbs_links {
+    text-decoration: none;
+    color: #757575;
+    font-size: 16px;
+}
+
+.breadcrumbs_links:hover {
+    cursor: pointer;
+}
+
+.slice {
+    padding: 0 10px;
+}

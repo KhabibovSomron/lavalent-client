@@ -3,12 +3,12 @@ import './About.css'
 
 
 interface IAboutProps {
-
+    aboutRef: any
 }
 
-const About: FC<IAboutProps> = () => {
+const About: FC<IAboutProps> = ({aboutRef}) => {
     return (
-        <div className='about'>
+        <div className='about' ref={aboutRef}>
             <div className="about_container">
                 <h2>О бутике</h2>
                 <div className="about_description">

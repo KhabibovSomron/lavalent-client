@@ -13,7 +13,7 @@ const Card: FC<ICardProps> = ({image_link, title}) => {
             <div className='card_image'>
                 <img src={image_link} alt="" />
             </div>
-            <a className='card_title' href='/'>{title}</a>
+            <h1 className='card_title'>{title}</h1>
         </div>
     )
 }
