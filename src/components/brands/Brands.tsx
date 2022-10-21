@@ -44,7 +44,7 @@ const Brands: FC<IBrandsProps> = () => {
                 <BreadCrumbs links={links} />
                 <div className="brands_container">
                     {brands.map((brand, index) =>
-                        <Link to={`/${params.category_index}/brands/${index}/product-list/`} key={index} className='brand_links' ><Card image_link={brand.image} title={brand.title}/></Link>
+                        <Link to={`/${params.category_index}/${brand.title}/${brand.id}/product-list/`} key={index} className='brand_links' ><Card image_link={brand.image} title={brand.title}/></Link>
                     )}
                 </div>
         </div>

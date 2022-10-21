@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit"
 import categoryReducer from "./reducers/CategorySlices";
-import breadCrumbsReducer from './reducers/BreadCrumbsSlices';
 import brandReducer from './reducers/BrandSlices'
+import productReducer from './reducers/ProductSlices'
+import productDetailReducer from './reducers/ProductDetailSlices'
 
 const store = configureStore({
     reducer: {
         categoryList: categoryReducer,
-        breadCrumbs: breadCrumbsReducer,
-        brandList: brandReducer
+        brandList: brandReducer,
+        productList: productReducer, 
+        productDetail: productDetailReducer,
     },
 })
 

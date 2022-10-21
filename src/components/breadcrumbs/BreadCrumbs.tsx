@@ -24,7 +24,7 @@ const BreadCrumbs: FC<IBreadCrumbsProps> = ({ links }) => {
                 } else {
                     return (
                         <div key={index}>
-                            <div className="breadcrumbs_links">{link.title}</div>
+                            <Link to={link.url} className="breadcrumbs_links">{link.title}</Link>
                         </div> 
                     )
                 } 

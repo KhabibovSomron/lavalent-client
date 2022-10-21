@@ -1,8 +1,10 @@
 import axios from "axios";
 import { BrandSlice } from "../reducers/BrandSlices";
 import { categoryListSlice } from "../reducers/CategorySlices";
+import { productDetailSlice } from "../reducers/ProductDetailSlices";
+import { productListSlice } from "../reducers/ProductSlices";
 import { AppDispatch } from "../Store";
-import { BRANDLIST_URL, CATEGORYLIST_URL } from "./endpoints";
+import { BRANDLIST_URL, CATEGORYLIST_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL } from "./endpoints";
 
 
 export const fetchCategories = () =>async (dispatch:AppDispatch) => {
@@ -22,5 +24,41 @@ export const fetchBrands = (id: number) => async (dispatch: AppDispatch) => {
         dispatch(BrandSlice.actions.brandsFetchingSuccess(response.data))
     } catch (e: any) {
         dispatch(BrandSlice.actions.brandsFetchingFailed(e.message))
+    }
+}
+
+export const fetchProducts = (category_id:number, brand_id: number | null) =>async (dispatch:AppDispatch) => {
+    try {
+        dispatch(productListSlice.actions.productListFetching())
+        let url = PRODUCTLIST_URL + `?category=${category_id}`
+        if (brand_id !== null) {
+            url += `&brand=${brand_id}`
+        }
+        const response = await axios.get(url)
+        dispatch(productListSlice.actions.productListFetchingSuccess(response.data))
+
+    } catch (e: any) {
+        dispatch(productListSlice.actions.productListFetchingFailed(e.message))
+    }
+}
+
+export const fetchProductImages = (product_id: number) =>async (dispatch: AppDispatch) => {
+    try {
+        dispatch(productListSlice.actions.productListFetching())
+        const res = await axios.get(IMAGESLIST_URL + `?product=${product_id}`)
+        dispatch(productListSlice.actions.imagesFetchingSuccess(res.data))
+    } catch (e: any) {
+        dispatch(productListSlice.actions.productListFetchingFailed(e.message))
+    }    
+}
+
+export const fetchProductDetail = (product_id: number) =>async (dispatch:AppDispatch) => {
+    try {
+        dispatch(productDetailSlice.actions.productDetailFetching())
+        const res = await axios.get(PRODUCTDETAIL_URL + `${product_id}/`)
+        console.log(res.data)
+        dispatch(productDetailSlice.actions.productDetailFetchingSuccess(res.data))
+    } catch (e: any) {
+        dispatch(productDetailSlice.actions.productDetailFetchingFailed(e.message))   
     }
 }
