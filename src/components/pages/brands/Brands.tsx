@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks'
-import { fetchBrands } from '../../redux/requests/ProductRequests'
-import { IBreadCrumbs } from '../../redux/types/BreadCrumbsType'
-import BreadCrumbs from '../breadcrumbs/BreadCrumbs'
-import Card from '../card/Card'
+import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
+import { fetchBrands } from '../../../redux/requests/ProductRequests'
+import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
+import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
+import Card from '../../UI/card/Card'
 import './Brands.css'
 
 

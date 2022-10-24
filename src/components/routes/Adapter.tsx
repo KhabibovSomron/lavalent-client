@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import CategoryCards from '../category_cards/CategoryCards';
+import CategoryCards from '../UI/category_cards/CategoryCards';
 import './Adapter.css';
 import { Routes, Route } from 'react-router-dom';
-import Brands from '../brands/Brands';
-import ProductList from '../productlist/ProductList';
+import Brands from '../pages/brands/Brands';
+import ProductList from '../pages/productlist/ProductList';
 
 
 interface IAdapterProps {

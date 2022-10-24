@@ -24,7 +24,7 @@
 .instagram > div {
     width: 24px;
     height: 24px;
-    background-image: url('../../images/instagram.png');
+    background-image: url('../../../images/instagram.png');
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
@@ -50,7 +50,7 @@
 .telegram > div {
     width: 24px;
     height: 24px;
-    background-image: url('../../images/telegram.png');
+    background-image: url('../../../images/telegram.png');
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;

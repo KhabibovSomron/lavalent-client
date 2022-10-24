@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { IBreadCrumbs } from '../../redux/types/BreadCrumbsType'
+import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import './BreadCrumbs.css'
 
 

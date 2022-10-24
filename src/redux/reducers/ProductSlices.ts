@@ -1,16 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IImage, IProduct } from "../types/ProductType";
+import { IImage, IProductPage } from "../types/ProductType";
 
 
 interface IProductState {
-    products: IProduct[],
+    pages: IProductPage,
     images: IImage[],
     isLoading: boolean,
     error: string
 }
 
 const initialState: IProductState = {
-    products: [],
+    pages: {
+        count: 0,
+        next: "",
+        previous: "",
+        results: []
+    },
     images: [],
     isLoading: false,
     error: ''
@@ -24,9 +29,9 @@ export const productListSlice = createSlice({
             state.isLoading = true
         },
 
-        productListFetchingSuccess(state, action: PayloadAction<IProduct[]>) {
+        productListFetchingSuccess(state, action: PayloadAction<IProductPage>) {
             state.isLoading = false
-            state.products = action.payload
+            state.pages = action.payload
             state.error = ''
         },
 

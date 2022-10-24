@@ -4,7 +4,7 @@ import { categoryListSlice } from "../reducers/CategorySlices";
 import { productDetailSlice } from "../reducers/ProductDetailSlices";
 import { productListSlice } from "../reducers/ProductSlices";
 import { AppDispatch } from "../Store";
-import { BRANDLIST_URL, CATEGORYLIST_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL } from "./endpoints";
+import { BRANDLIST_URL, CATEGORYLIST_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, PRODUCTSIZES_URL } from "./endpoints";
 
 
 export const fetchCategories = () =>async (dispatch:AppDispatch) => {
@@ -60,5 +60,15 @@ export const fetchProductDetail = (product_id: number) =>async (dispatch:AppDisp
         dispatch(productDetailSlice.actions.productDetailFetchingSuccess(res.data))
     } catch (e: any) {
         dispatch(productDetailSlice.actions.productDetailFetchingFailed(e.message))   
+    }
+}
+
+export const fetchProductSizes = (product_id: number) =>async (dispatch:AppDispatch) => {
+    try {
+        dispatch(productDetailSlice.actions.productDetailFetching())
+        const res = await axios.get(PRODUCTSIZES_URL + `?product=${product_id}`)
+        dispatch(productDetailSlice.actions.productSizesFetchingSuccess(res.data))
+    } catch (e: any) {
+        dispatch(productDetailSlice.actions.productDetailFetchingFailed(e.message))
     }
 }

@@ -1,3 +1,10 @@
+export interface IProductPage {
+    count: number,
+    next: string,
+    previous: string,
+    results: IProduct[]
+}
+
 export interface IProduct {
     id: number,
     price: number,
@@ -9,6 +16,11 @@ export interface IProduct {
 export interface IImage {
     id: number,
     image: string
+}
+
+export interface ISizes {
+    id: number,
+    size: string
 }
 
 export interface IProductDetail {

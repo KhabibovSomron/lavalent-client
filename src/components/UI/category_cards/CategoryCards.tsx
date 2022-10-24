@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom';
-import {  useAppSelector } from '../../hooks/ReduxHooks';
+import {  useAppSelector } from '../../../hooks/ReduxHooks';
 import Card from '../card/Card';
 import './CategoryCards.css'
 

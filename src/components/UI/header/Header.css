@@ -15,14 +15,14 @@
 .header_logo {
     width: 60px;
     height: 60px;
-    background-image: url('../../images/logo.png');
+    background-image: url('../../../images/logo.png');
     background-size: cover;
     background-repeat: no-repeat;
     transition: all .3s;
 }
 
 .header_logo:hover {
-    background-image: url('../../images/home.png');
+    background-image: url('../../../images/home.png');
 }
 
 .header_menu {
@@ -62,7 +62,7 @@
 
 .header_search {
     margin-right: 50px;
-    background-image: url('../../images/search_button.png');
+    background-image: url('../../../images/search_button.png');
     background-size: cover;
     width: 100px;
     height: 100px;

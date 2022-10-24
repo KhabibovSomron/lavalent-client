@@ -1,10 +1,11 @@
 import { FC, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHooks'
-import { fetchProducts } from '../../redux/requests/ProductRequests'
-import { IBreadCrumbs } from '../../redux/types/BreadCrumbsType'
-import BreadCrumbs from '../breadcrumbs/BreadCrumbs'
-import ProductCard from '../product_card/ProductCard'
+import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
+import { fetchProducts } from '../../../redux/requests/ProductRequests'
+import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
+import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
+import Pager from '../../UI/pager/Pager'
+import ProductCard from '../../UI/product_card/ProductCard'
 import './ProductList.css'
 
 
@@ -16,7 +17,7 @@ const ProductList: FC<IProductListProps> = () => {
 
     const params = useParams()
     const category = useAppSelector(state => state.categoryList.categories[Number(params.category_index)])
-    const productList = useAppSelector(state => state.productList)
+    const productList = useAppSelector(state => state.productList.pages)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -50,8 +51,8 @@ const ProductList: FC<IProductListProps> = () => {
             <h1>{params.title}</h1>
             <BreadCrumbs links={links}  />
             <div className="products_container">
-                {productList.products.map((product, index) => 
-                <Link to={`/${params.category_index}/brand/${params.brand_id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
+                {productList.results.map((product, index) => 
+                <Link to={`/${params.category_index}/${params.title}/${params.brand_id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
                     <ProductCard
                         image_link={product.poster}
                         material={product.material}
@@ -61,6 +62,7 @@ const ProductList: FC<IProductListProps> = () => {
                 </Link>
                 )}
             </div>
+            <Pager limit={60} offset={1110} onClickHandler={() => {}} pageLimit={7} />
         </div>
     )
 }
