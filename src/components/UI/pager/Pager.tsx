@@ -16,23 +16,22 @@ const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit, pageLimit}) => {
     
     const pagesCount = useMemo(() =>  {
         const result = offset / limit
-
-        return Math.ceil(result)
+        return Math.round(result)
     }, [offset, limit])
 
     const pages: number[] = []
 
-    createPages(pages, activePage,pagesCount, pageLimit)
+    createPages(pages, activePage, pagesCount, pageLimit)
 
     const onPageClickHandler = (page: number) => {
         setActivePage(page)
-        onClickHandler()
+        onClickHandler(page)
     }
 
     return (
         <div className="pager">
             <div className="pager_header">
-                1 - {limit} из {offset}
+                {limit * activePage - limit + 1} - {limit * activePage <= offset ? limit * activePage: offset} из {offset}
             </div>
             <div className="pager_body">
                 
@@ -62,7 +61,7 @@ const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit, pageLimit}) => {
                     }
                 </div>
                 
-                <div className={activePage !== pagesCount ? "pager_body_forward": "pager_body_forward pager_body_back"} onClick={
+                <div className={activePage !== pagesCount ? "pager_body_forward": "pager_body_forward button_opacity"} onClick={
                     () => {
                          if (activePage !== pagesCount) 
                             onPageClickHandler(activePage + 1)

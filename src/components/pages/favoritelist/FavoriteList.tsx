@@ -1,35 +1,41 @@
 import { FC, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
-import { fetchProducts } from '../../../redux/requests/ProductRequests'
+import { fetchFavoriteProducts } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
+import { IFavoriteList } from '../../../redux/types/ProductType'
 import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
 import Pager from '../../UI/pager/Pager'
 import ProductCard from '../../UI/product_card/ProductCard'
-import './ProductList.css'
+import SaveButton from '../../UI/save_button/SaveButton'
+import './FavoriteList.css'
 
 
-interface IProductListProps {
+interface IFavoriteListProps {
 
 }
 
-const ProductList: FC<IProductListProps> = () => {
+const FavoriteList: FC<IFavoriteListProps> = () => {
 
     const params = useParams()
-    const category = useAppSelector(state => state.categoryList.categories[Number(params.category_index)])
     const productList = useAppSelector(state => state.productList.pages)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (category?.id) {
-            if (params.title === "All brands") {
-                dispatch(fetchProducts(category?.id, null, 1))
-            } else {
-                dispatch(fetchProducts(category?.id, Number(params.brand_id), 1))
-            }
+        const list = localStorage.getItem('fav_list')
+        if (list) {
+            const obj: IFavoriteList = JSON.parse(list)
+            dispatch(fetchFavoriteProducts(obj.products, 1))
         }
-    }, [category, dispatch, params])
+    }, [ dispatch, params])
 
+    const onPaginationClick = (page: number) => {
+        const list = localStorage.getItem('fav_list')
+        if (list) {
+            const obj: IFavoriteList = JSON.parse(list)
+            dispatch(fetchFavoriteProducts(obj.products, page))
+        }
+    }
 
     const links: IBreadCrumbs[] = [
         {
@@ -37,32 +43,19 @@ const ProductList: FC<IProductListProps> = () => {
             url: '/'
         },
         {
-            title: category?.title,
-            url: `/${Number(params.category_index)}/brands/`
-        },
-        {
-            title: String(params.title),
-            url: `/${Number(params.category_index)}/${params.title}/${Number(params.brand_id)}/product-list/`
+            title: 'Израбнное',
+            url: `/productlist/favorites/`
         }
     ]
 
-    const onPaginationClick = (page: number) => {
-        if (category?.id) {
-            if (params.title === "All brands") {
-                dispatch(fetchProducts(category?.id, null, page))
-            } else {
-                dispatch(fetchProducts(category?.id, Number(params.brand_id), page))
-            }
-        }
-    }
-
     return (
         <div className='productlist'>
-            <h1>{params.title}</h1>
+            <h1>Мое Избранное</h1>
             <BreadCrumbs links={links}  />
             <div className="products_container">
                 {productList.results.map((product, index) => 
-                <Link to={`/${params.category_index}/${params.title}/${params.brand_id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
+                <div className='product_container' key={index}>
+                    <Link to={`/${params.category_index}/${params.title}/${params.brand_id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}}>
                     <ProductCard
                         image_link={product.poster}
                         material={product.material}
@@ -70,6 +63,9 @@ const ProductList: FC<IProductListProps> = () => {
                         price={product.price}
                     />
                 </Link>
+
+                <SaveButton id={product.id} isFavorite={true} />
+                </div>
                 )}
             </div>
             {Math.round(productList.count / 2) > 1 ? 
@@ -80,4 +76,4 @@ const ProductList: FC<IProductListProps> = () => {
     )
 }
 
-export default ProductList;
+export default FavoriteList;

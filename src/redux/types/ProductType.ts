@@ -32,3 +32,7 @@ export interface IProductDetail {
     description: string,
     characteristic: string
 }
+
+export interface IFavoriteList {
+    products: number[]
+}
