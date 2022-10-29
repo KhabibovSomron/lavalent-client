@@ -55,7 +55,7 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
             <div className="products_container">
                 {productList.results.map((product, index) => 
                 <div className='product_container' key={index}>
-                    <Link to={`/${params.category_index}/${params.title}/${params.brand_id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}}>
+                    <Link to={`/${product.category}/${product.brand.title}/${product.brand.id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}}>
                     <ProductCard
                         image_link={product.poster}
                         material={product.material}

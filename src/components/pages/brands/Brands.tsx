@@ -16,16 +16,14 @@ const Brands: FC<IBrandsProps> = () => {
     
     const params = useParams()
     
-    const category = useAppSelector(state => state.categoryList.categories[Number(params.category_index)])
+    const category = useAppSelector(state => state.categoryList.categories.filter(item => item.id === Number(params.category_id)))
 
     const brands = useAppSelector(state => state.brandList.brands)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (category?.id) {
-            dispatch(fetchBrands(category?.id))
-        }
-    }, [category, dispatch])
+        dispatch(fetchBrands(Number(params.category_id)))
+    }, [params.category_id, dispatch])
 
     const links: IBreadCrumbs[] = [
         {
@@ -33,18 +31,18 @@ const Brands: FC<IBrandsProps> = () => {
             url: '/'
         },
         {
-            title: category?.title,
-            url: `/${Number(params.category_index)}/brands/`
+            title: category[0]?.title,
+            url: `/${Number(params.category_id)}/brands/`
         }
     ]
 
     return (
         <div className='brands'>
-                <h1>{category?.title}</h1>
+                <h1>{category[0]?.title}</h1>
                 <BreadCrumbs links={links} />
                 <div className="brands_container">
                     {brands.map((brand, index) =>
-                        <Link to={`/${params.category_index}/${brand.title}/${brand.id}/product-list/`} key={index} className='brand_links' ><Card image_link={brand.image} title={brand.title}/></Link>
+                        <Link to={`/${params.category_id}/${brand.title}/${brand.id}/product-list/`} key={index} className='brand_links' ><Card image_link={brand.image} title={brand.title}/></Link>
                     )}
                 </div>
         </div>

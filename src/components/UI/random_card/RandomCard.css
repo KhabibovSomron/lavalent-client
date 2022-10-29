@@ -1,0 +1,32 @@
+.random_card {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.random_card_image {
+    width: 267px;
+    height: 267px;
+}
+
+.random_card_image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all .3s;
+}
+
+.random_card_title {
+    width: 100%;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 18px;
+    color: var(--secondary_color);
+    transition: all .3s;
+}
+
+.random_card:hover {
+    box-shadow: inset 0 0 0 1px #eee;
+}

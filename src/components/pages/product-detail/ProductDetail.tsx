@@ -39,27 +39,26 @@ const ProductDetail: FC<IProductDetailProps> = () => {
         }
     }, [dispatch, params])
 
-
     const onImageItemsClick = (index: number) => {
         setActiveIndex(index)
     }
 
-    const category = useAppSelector(state => state.categoryList.categories[Number(params.category_index)])
+    const category = useAppSelector(state => state.categoryList.categories.filter(item => item.id === Number(params.category_id)))
 
     const links: IBreadCrumbs[] = [
-        {
-            title: 'Магазин',
-            url: '/'
-        },
-        {
-            title: category?.title,
-            url: `/${Number(params.category_index)}/brands/`
-        },
-        {
-            title: String(params.title),
-            url: `/${params.category_index}/${params.title}/${params.brand_id}/product-list/`
-        }
-    ]
+            {
+                title: 'Магазин',
+                url: '/'
+            },
+            {
+                title: category[0]?.title,
+                url: `/${Number(params.category_id)}/brands/`
+            },
+            {
+                title: String(params.title),
+                url: `/${params.category_id}/${params.title}/${params.brand_id}/product-list/`
+            }
+        ]
 
 
     const showAllHandler = () => {

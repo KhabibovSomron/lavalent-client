@@ -17,7 +17,7 @@ const Category: FC<ICategoryProps> = ({ storeRef }) => {
         <div className='category' ref={storeRef}>
             <div className="category_container">
                 {categories.map((category, index) => 
-                    <Link to={`/${index}/brands/`} className='category_links' key={index} >{category.title}</Link>
+                    <Link to={`/${category.id}/brands/`} className='category_links' key={index} >{category.title}</Link>
                 )}
             </div>
         </div>

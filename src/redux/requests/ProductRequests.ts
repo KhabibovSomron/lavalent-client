@@ -4,7 +4,7 @@ import { categoryListSlice } from "../reducers/CategorySlices";
 import { productDetailSlice } from "../reducers/ProductDetailSlices";
 import { productListSlice } from "../reducers/ProductSlices";
 import { AppDispatch } from "../Store";
-import { BRANDLIST_URL, CATEGORYLIST_URL, FAVORITE_PRODUCTS_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, PRODUCTSIZES_URL } from "./endpoints";
+import { BRANDLIST_URL, CATEGORYLIST_URL, FAVORITE_PRODUCTS_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, PRODUCTSIZES_URL, RANDOM_PRODUCTS_URL, SEARCH_PRODUCT_URL } from "./endpoints";
 
 
 export const fetchCategories = () =>async (dispatch:AppDispatch) => {
@@ -27,7 +27,7 @@ export const fetchBrands = (id: number) => async (dispatch: AppDispatch) => {
     }
 }
 
-export const fetchProducts = (category_id:number, brand_id: number | null, page: number) =>async (dispatch:AppDispatch) => {
+export const fetchProducts = (category_id:number, brand_id: number | null, page: number, ordering: string) =>async (dispatch:AppDispatch) => {
     try {
         dispatch(productListSlice.actions.productListFetching())
         let url = PRODUCTLIST_URL + `?category=${category_id}`
@@ -37,6 +37,10 @@ export const fetchProducts = (category_id:number, brand_id: number | null, page:
 
         if (page !== 1) {
             url += `&page=${page}`
+        }
+
+        if (ordering) {
+            url += `&ordering=${ordering}`
         }
         const response = await axios.get(url)
         dispatch(productListSlice.actions.productListFetchingSuccess(response.data))
@@ -60,7 +64,6 @@ export const fetchProductDetail = (product_id: number) =>async (dispatch:AppDisp
     try {
         dispatch(productDetailSlice.actions.productDetailFetching())
         const res = await axios.get(PRODUCTDETAIL_URL + `${product_id}/`)
-        console.log(res.data)
         dispatch(productDetailSlice.actions.productDetailFetchingSuccess(res.data))
     } catch (e: any) {
         dispatch(productDetailSlice.actions.productDetailFetchingFailed(e.message))   
@@ -99,4 +102,37 @@ export const fetchFavoriteProducts = (products_id: number[], page: number) =>asy
     }
     
 
+}
+
+export const fetchFoundProducts = (keywords: string, page: number, ordering: string) =>async (dispatch:AppDispatch) => {
+    try {
+
+        let url = SEARCH_PRODUCT_URL + '?'
+
+        if (ordering) {
+            url += `ordering=${ordering}`
+        }
+
+        if (page !== 1) {
+            url += `&page=${page}`
+        }
+
+        url += `&search=${keywords.trim().toLocaleLowerCase()}`
+
+        dispatch(productListSlice.actions.productListFetching())
+        const res = await axios.get(url)
+        dispatch(productListSlice.actions.productListFetchingSuccess(res.data))
+    } catch (e: any) {
+        dispatch(productListSlice.actions.productListFetchingFailed(e.message))
+    }
+}
+
+export const fetchRandomProducts = () => async (dispatch:AppDispatch) => {
+    try {
+        dispatch(productListSlice.actions.productListFetching())
+        const res = await axios.get(RANDOM_PRODUCTS_URL)
+        dispatch(productListSlice.actions.randomProductsFetchingSuccess(res.data))
+    } catch (e: any) {
+        dispatch(productListSlice.actions.productListFetchingFailed(e.message))
+    }
 }

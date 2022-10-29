@@ -10,7 +10,12 @@ export interface IProduct {
     price: number,
     vendor_code: number,
     material: string,
-    poster: string
+    poster: string,
+    brand: {
+        id: number,
+        title: string
+    },
+    category: number,
 }
 
 export interface IImage {

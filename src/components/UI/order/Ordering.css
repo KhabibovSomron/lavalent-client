@@ -1,0 +1,29 @@
+.ordering {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    align-items: center;
+}
+
+.ordering_title {
+    position: absolute;
+    background-color: white;
+    margin-right: 20px;
+    width: 100%;
+    text-align: end;
+    font-size: 16px;
+    color: #757575;
+}
+
+#order_select_id {
+    border: none;
+    font-size: 16px;
+    outline: none;
+    color: #757575;
+    text-align: center;
+}
+
+#order_select_id > option {
+    font-size: 14px;
+}

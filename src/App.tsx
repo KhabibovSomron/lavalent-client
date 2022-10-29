@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import ProductDetail from "./components/pages/product-detail/ProductDetail";
 import ProductList from "./components/pages/productlist/ProductList";
 import FavoriteList from "./components/pages/favoritelist/FavoriteList";
+import FoundList from "./components/pages/foundlist/FoundList";
 
 
 
@@ -21,10 +22,11 @@ const App: FC<IAppProps> = () => {
       <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<CategoryCards />} />
-            <Route path=':category_index/brands/' element={<Brands />} />
-            <Route path=':category_index/:title/:brand_id/product-list/' element={<ProductList />} />
-            <Route path=':category_index/:title/:brand_id/product-detail/:product_id/' element={<ProductDetail />} />
+            <Route path=':category_id/brands/' element={<Brands />} />
+            <Route path=':category_id/:title/:brand_id/product-list/' element={<ProductList />} />
+            <Route path=':category_id/:title/:brand_id/product-detail/:product_id/' element={<ProductDetail />} />
             <Route path='productlist/favorites/' element={<FavoriteList />} />
+            <Route path='search/:keywords/' element={<FoundList />} />
           </Route>
       </Routes>
     </>

@@ -15,10 +15,10 @@ const Header: FC<IHeaderProps> = ({storeRef, addressRef, contactRef, aboutRef, g
     return (
         <div className='header'>
         <div className='header_links_container'>
-            <div className='header_logo'></div>
+        <Link className='span_link' to='/'><div className='header_logo' onClick={() => goToSection(storeRef)}></div></Link>
+            
             <div className='header_menu'>
                 <ul>
-                   <li className='header_menu_items'><span className='header_menu_links' onClick={() => goToSection(storeRef)}><Link className='span_link' to='/'>Магазин</Link></span></li>
                    <li className='header_menu_items'><span className='header_menu_links' onClick={
                     () => goToSection(aboutRef)
                    }>О нас</span></li>
@@ -31,7 +31,6 @@ const Header: FC<IHeaderProps> = ({storeRef, addressRef, contactRef, aboutRef, g
                 </ul>
             </div>
         </div>
-        <div className='header_search'></div>
         </div>
     )
 }

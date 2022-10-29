@@ -1,7 +1,7 @@
-import { FC, useEffect, useRef } from "react"
-import { Link, Outlet } from "react-router-dom"
+import { FC, useEffect, useRef, useState, ChangeEvent } from "react"
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../hooks/ReduxHooks"
-import { fetchCategories } from "../redux/requests/ProductRequests"
+import { fetchCategories, fetchRandomProducts } from "../redux/requests/ProductRequests"
 import About from "./UI/about/About"
 import Address from "./UI/address/Address"
 import Category from "./UI/category/Category"
@@ -12,6 +12,8 @@ import Info from "./UI/info/Info"
 import './Layout.css'
 import { IFavoriteList } from "../redux/types/ProductType"
 import { categoryListSlice } from "../redux/reducers/CategorySlices"
+import useOutsideAlerter from "../hooks/UseOutSide"
+import RandomCard from "./UI/random_card/RandomCard"
 
 
 interface ILayoutProps {
@@ -21,13 +23,21 @@ interface ILayoutProps {
 const Layout: FC<ILayoutProps> = () => {
 
   const dispatch = useAppDispatch()
-  
+
   const storeRef = useRef(null)
   const contactRef = useRef(null)
   const aboutRef = useRef(null)
   const addressRef = useRef(null)  
+  const searchButtonRef: any = useRef(null)
   
+  const params = useParams()
+  const randomProducts = useAppSelector(state => state.productList.random_products)
+
   const favoriteCount = useAppSelector(state => state.categoryList.favoriteCount) 
+  const [isFixed, setIsFixed] = useState<boolean>(false)
+  const {ref, isShow, setIsShow} = useOutsideAlerter(false)
+  const [keywords, setKeywords] = useState<string>('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(fetchCategories())
@@ -38,6 +48,10 @@ const Layout: FC<ILayoutProps> = () => {
     }
   }, [dispatch])
 
+  useEffect(() => {
+    dispatch(fetchRandomProducts())
+  }, [dispatch, params])
+
 
   const goToSection = (ref: any) => {
     window.scrollTo({
@@ -46,8 +60,46 @@ const Layout: FC<ILayoutProps> = () => {
     })
 }
 
-  return (
+window.onscroll = () => {
+  
+  if (searchButtonRef !== null) {
+    if (window.pageYOffset + 20 > 939) {
+      setIsFixed(true)
+    } else {
+      setIsFixed(false)
+    }
+  }
+}
+
+const onSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  setKeywords(event.target.value)
+}
+
+const onSubmitHandler = (event: ChangeEvent<HTMLFormElement>) => {
+  event.preventDefault()
+  navigate(`/search/${keywords}/`)
+  setIsShow(false)
+}
+
+
+return (
     <div className="App">
+            <div className={isFixed ? "search_button search_button_fixed" :"search_button"} ref={searchButtonRef} onClick={() => setIsShow(true)}>
+                <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><g fill="none" fillRule="evenodd"><path d="M21 25c5.523 0 10-4.477 10-10S26.523 5 21 5 11 9.477 11 15s4.477 10 10 10z" strokeWidth="2"></path><path d="M13.514 22.486L5.5 30.5" strokeWidth="3" strokeLinecap="round"></path></g></svg>
+            </div>
+        <div className="message_button">
+          <svg width="60" height="60" viewBox="0 0 60 60"><g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"><g><circle fill="#bb0710" cx="30" cy="30" r="30"></circle><svg x="10" y="10"><g transform="translate(0.000000, -10.000000)" fill="#FFFFFF"><g transform="translate(0.000000, 10.000000)"><path d="M20,0 C31.2666,0 40,8.2528 40,19.4 C40,30.5472 31.2666,38.8 20,38.8 C17.9763,38.8 16.0348,38.5327 14.2106,38.0311 C13.856,37.9335 13.4789,37.9612 13.1424,38.1098 L9.1727,39.8621 C8.1343,40.3205 6.9621,39.5819 6.9273,38.4474 L6.8184,34.8894 C6.805,34.4513 6.6078,34.0414 6.2811,33.7492 C2.3896,30.2691 0,25.2307 0,19.4 C0,8.2528 8.7334,0 20,0 Z M7.99009,25.07344 C7.42629,25.96794 8.52579,26.97594 9.36809,26.33674 L15.67879,21.54734 C16.10569,21.22334 16.69559,21.22164 17.12429,21.54314 L21.79709,25.04774 C23.19919,26.09944 25.20039,25.73014 26.13499,24.24744 L32.00999,14.92654 C32.57369,14.03204 31.47419,13.02404 30.63189,13.66324 L24.32119,18.45264 C23.89429,18.77664 23.30439,18.77834 22.87569,18.45674 L18.20299,14.95224 C16.80079,13.90064 14.79959,14.26984 13.86509,15.75264 L7.99009,25.07344 Z"></path></g></g></svg></g></g></svg>
+        </div>
+
+        <div className={isShow ? "search_box": "search_box_disable"} ref={ref} >
+          <form className="search_box_container" onSubmit={onSubmitHandler}>
+            <button className="search_box_icon" type="submit">
+              <svg className="search_box_icon_svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fillRule="evenodd"><path  d="M14.335 17.528c4.357 0 7.89-3.532 7.89-7.89 0-4.357-3.533-7.89-7.89-7.89-4.358 0-7.89 3.533-7.89 7.89 0 4.358 3.532 7.89 7.89 7.89zm0 1c-4.91 0-8.89-3.98-8.89-8.89s3.98-8.89 8.89-8.89 8.89 3.98 8.89 8.89-3.98 8.89-8.89 8.89z"></path><path d="M7.537 15.292L.684 22.146c-.39.39-.39 1.023 0 1.414.39.39 1.023.39 1.414 0l6.853-6.854c.392-.39.392-1.023 0-1.414-.39-.39-1.022-.39-1.413 0z"></path></g></svg>
+            </button>
+            <input type='text' className="search_box_input" placeholder="Поиск товаров" onChange={onSearchInputChange} />
+          </form>
+        </div>
+        
         <div className="background_block"></div>
         <div className="app_main_container">
           <Header aboutRef={aboutRef} addressRef={addressRef} contactRef={contactRef} storeRef={storeRef} goToSection={goToSection} />
@@ -72,6 +124,19 @@ const Layout: FC<ILayoutProps> = () => {
                 </div>
               </Link>
                 
+            </div>
+
+            <div className="random_products">
+              <h1 className="random_products_title">
+                Вам может понравиться
+              </h1>
+              <div className="random_products_container">
+                {randomProducts.map((product, index) =>
+                <Link to={`/${product.category}/${product.brand.title}/${product.brand.id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
+                  <RandomCard image_link={product.poster} price={product.price} />
+                </Link>
+                )}
+              </div>
             </div>
         </div>
 

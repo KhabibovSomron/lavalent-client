@@ -32,6 +32,8 @@
 
 .header_menu > ul {
     list-style-type: none;
+    padding: 0;
+    margin-left: 20px;
 }
 
 .header_menu_items {
@@ -58,12 +60,4 @@
     font-size: 16px;
     font-weight: 600;
     line-height: 1.3em;
-}
-
-.header_search {
-    margin-right: 50px;
-    background-image: url('../../../images/search_button.png');
-    background-size: cover;
-    width: 100px;
-    height: 100px;
 }

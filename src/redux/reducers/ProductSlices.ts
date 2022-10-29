@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IImage, IProductPage } from "../types/ProductType";
+import { IImage, IProduct, IProductPage } from "../types/ProductType";
 
 
 interface IProductState {
     pages: IProductPage,
     images: IImage[],
+    random_products: IProduct[],
     isLoading: boolean,
     error: string
 }
@@ -17,6 +18,7 @@ const initialState: IProductState = {
         results: []
     },
     images: [],
+    random_products: [],
     isLoading: false,
     error: ''
 }
@@ -43,6 +45,12 @@ export const productListSlice = createSlice({
         imagesFetchingSuccess(state, action: PayloadAction<IImage[]>) {
             state.error = ''
             state.images = action.payload
+            state.isLoading = false
+        },
+
+        randomProductsFetchingSuccess(state, action: PayloadAction<IProduct[]>) {
+            state.error = ''
+            state.random_products = action.payload
             state.isLoading = false
         }
     }
