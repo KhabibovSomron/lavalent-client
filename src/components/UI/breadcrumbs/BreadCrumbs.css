@@ -1,6 +1,7 @@
 .breadcrumbs {
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .breadcrumbs_links {
@@ -16,4 +17,10 @@
 
 .slice {
     padding: 0 10px;
+}
+
+@media screen and (max-width: 1000px) and (min-width: 712px) {
+    .breadcrumbs_links {
+        font-size: 14px;
+    }
 }

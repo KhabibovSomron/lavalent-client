@@ -69,7 +69,7 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
                 )}
             </div>
             {Math.round(productList.count / 2) > 1 ? 
-                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} pageLimit={7} />
+                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 
         </div>

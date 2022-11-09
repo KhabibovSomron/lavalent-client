@@ -15,7 +15,7 @@ export interface IProduct {
         id: number,
         title: string
     },
-    category: number,
+    category: number
 }
 
 export interface IImage {
@@ -35,7 +35,8 @@ export interface IProductDetail {
     material: string,
     brand: string,
     description: string,
-    characteristic: string
+    characteristic: string,
+    sizes: string[]
 }
 
 export interface IFavoriteList {

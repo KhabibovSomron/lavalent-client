@@ -86,3 +86,9 @@
     border: 2px solid var(--text_color);
 
 }
+
+@media screen and (max-width: 1000px) {
+    .productlist > h1 {
+     font-size: 28px;
+    } 
+ }

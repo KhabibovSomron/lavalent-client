@@ -26,7 +26,7 @@ const FoundList: FC<IFoundListProps> = () => {
     useEffect(() => {
         setKeywords(String(params.keywords))
         dispatch(fetchFoundProducts(keywords, 1, order))
-    }, [dispatch, params, order])
+    }, [dispatch, params.keywords, order])
 
     const onPaginationClick = (page: number) => {
         dispatch(fetchFoundProducts(keywords, page, order))
@@ -81,7 +81,7 @@ const FoundList: FC<IFoundListProps> = () => {
                 )}
             </div>
             {Math.round(productList.count / 2) > 1 ? 
-                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} pageLimit={7} />
+                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 
         </div>

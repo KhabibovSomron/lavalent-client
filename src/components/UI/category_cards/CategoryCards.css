@@ -1,7 +1,16 @@
 .category_cards {
     display: flex;
-    padding-bottom: 32px;
+    justify-content: center;
+    max-width: 1152px;
+    width: 100%;
     margin: 0 auto;
+}
+
+.category_cards_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 32px;
 }
 
 .links {

@@ -23,3 +23,9 @@
     flex-wrap: wrap;
     padding: 20px 0 32px;
 }
+
+@media screen and (max-width: 1000px) {
+    .productlist > h1 {
+     font-size: 28px;
+    } 
+ }

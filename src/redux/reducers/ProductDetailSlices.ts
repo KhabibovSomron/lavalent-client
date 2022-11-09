@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProductDetail, ISizes } from "../types/ProductType";
+import { IProductDetail } from "../types/ProductType";
 
 interface IShortBrand {
     id: number,
@@ -8,7 +8,6 @@ interface IShortBrand {
 
 interface IProductDetailState {
     productDetail: IProductDetail,
-    sizes: ISizes[],
     brand: IShortBrand,
     isLoading: boolean,
     error: string
@@ -22,13 +21,13 @@ const initialState: IProductDetailState = {
         brand: "",
         characteristic: '',
         description: '',
-        material: ''
+        material: '',
+        sizes: []
     },
     brand: {
         id: 0,
         title: ''
     },
-    sizes: [],
     isLoading: false,
     error: ''
 }
@@ -51,12 +50,6 @@ export const productDetailSlice = createSlice({
         productDetailFetchingFailed(state, action: PayloadAction<string>) {
             state.isLoading = false
             state.error = action.payload
-        },
-
-        productSizesFetchingSuccess(state, action: PayloadAction<ISizes[]>) {
-            state.isLoading = false
-            state.error = ''
-            state.sizes = action.payload
         },
         brandFetchingSuccess(state, action: PayloadAction<IShortBrand>) {
             state.brand = action.payload

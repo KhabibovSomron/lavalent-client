@@ -26,3 +26,15 @@
     font-weight: 400;
     margin: 16px 0;
 }
+
+@media screen and (max-width: 1000px) {
+    .info_container {
+        width: 624px;
+    }
+    .info_container > h2 {
+        font-size: 28px;
+    }
+    .info_description > p {
+        font-size: 14px;
+    }
+}

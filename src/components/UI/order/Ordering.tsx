@@ -19,6 +19,8 @@ const Ordering: FC<IOrderingProps> = ({value, setValue}) => {
             {/* <label htmlFor="order_select_id" className='ordering_title'>Сортировка</label> */}
             <select name="order_select" id="order_select_id" defaultValue='sort' onChange={onSelectOrder}>
                 <option value="sort" disabled hidden>Сортировка по</option>
+                <option value="-isNew">Новинки</option>
+                <option value="-isRecommended">Наши рекомендации</option>
                 <option value="price">Цена: от низкой к высокой</option>
                 <option value="-price">Цена: от высокой к низкой</option>
                 <option value="vendor_code">Название: от А к Я</option>

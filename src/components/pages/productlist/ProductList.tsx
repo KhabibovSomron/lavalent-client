@@ -20,7 +20,6 @@ const ProductList: FC<IProductListProps> = () => {
     const category = useAppSelector(state => state.categoryList.categories.filter(item => item.id === Number(params.category_id)))
     const productList = useAppSelector(state => state.productList.pages)
     const dispatch = useAppDispatch()
-
     const [order, setOrder] = useState<string>("")
 
     useEffect(() => {
@@ -76,7 +75,7 @@ const ProductList: FC<IProductListProps> = () => {
                 )}
             </div>
             {Math.round(productList.count / 2) > 1 ? 
-                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} pageLimit={7} />
+                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 
         </div>

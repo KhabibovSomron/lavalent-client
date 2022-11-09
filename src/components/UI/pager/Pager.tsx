@@ -6,14 +6,21 @@ import './Pager.css'
 interface IPagerProps {
     offset: number,
     limit: number,
-    onClickHandler: Function,
-    pageLimit: number
+    onClickHandler: Function
 }
 
-const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit, pageLimit}) => {
+const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit}) => {
 
     const [activePage, setActivePage] = useState(1)
-    
+    const [pageLimit, setPageLimit] = useState(window.innerWidth < 650 ? 3 : 7)
+    window.addEventListener("resize", () => {
+        if (window.innerWidth < 650) {
+            setPageLimit(3)
+        } else {
+            setPageLimit(7)
+        }
+    })
+
     const pagesCount = useMemo(() =>  {
         const result = offset / limit
         return Math.round(result)

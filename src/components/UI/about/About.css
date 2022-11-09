@@ -2,7 +2,7 @@
     background-color: white;
     display: flex;
     justify-content: center;
-    padding: 32px 0;
+    padding: 32px 16px;
 }
 
 .about_container {
@@ -28,7 +28,7 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 1.8em;
-    margin: 0;
+    margin: 16px 0;
 }
 
 .about_logo {
@@ -36,4 +36,22 @@
     height: 144px;
     margin-top: 8px;
     margin-left: 32px;
+}
+
+@media screen and (max-width: 1000px) {
+    .about_container {
+        width: 624px;
+    }
+    .about_container > h2 {
+        font-size: 28px;
+    }
+    .about_description > p {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 831px) {
+    .about_logo {
+        margin: 0;
+    }
 }

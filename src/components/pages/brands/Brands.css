@@ -27,3 +27,9 @@
 .brand_links {
     text-decoration: none;
 }
+
+@media screen and (max-width: 1000px) {
+    .brands > h1 {
+     font-size: 28px;
+    } 
+ }

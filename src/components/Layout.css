@@ -42,6 +42,9 @@
     cursor: pointer;
   }
 
+  .app_content {
+    background-color: white;
+  }
 
   .adapter { 
     background-color: white;
@@ -111,9 +114,9 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 939px;
   right: 20px;
   z-index: 40;
+  border: 2px solid var(--text_color);
 }
 
 .search_button:hover {
@@ -124,6 +127,8 @@
 
 .search_button > svg {
   stroke: var(--text_color);
+  width: 36px; 
+  height: 36px;
 }
 
 .search_button_fixed {
@@ -210,4 +215,25 @@
 .random_products_container {
   display: flex;
   overflow: hidden;
+}
+
+
+@media screen and (max-width: 1170px) {
+  .random_products_container {
+    overflow: hidden;
+    overflow-x: scroll;
+  }
+}
+
+
+@media screen and (max-width: 415px) {
+  .search_button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .search_button > svg {
+    width: 24px;
+    height: 24px;
+  }
 }

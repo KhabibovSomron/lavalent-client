@@ -5,6 +5,10 @@
     margin: 0 auto;
 }
 
+.detail {
+    display: flex;
+}
+
 .button_container {
     width: 100%;
     display: flex;
@@ -58,30 +62,11 @@
 .detail_gallery {
     margin-bottom: 30px;
     padding-right: 16px;
+    width: 100%;
 }
-
 
 .gallery_image {
     margin-bottom: 10px;
-}
-
-.gallery_image, .gallery_image > img {
-    width: 730px;
-    height: 730px;
-}
-
-.gallery_images {
-    display: flex;
-    justify-content: center;
-}
-
-.gallery_item, .gallery_item > img {
-    width: 130px;
-    height: 130px;
-}
-
-.gallery_item {
-    padding: 0px 4px 8px;
 }
 
 .detail_info {
@@ -294,4 +279,20 @@
 .show_save {
     max-width: 215px;
     margin-top: 0;
+}
+
+@media screen and (max-width: 1000px) and (min-width: 712px) {
+    .info_product_brand, .info_product_description, .characteristic_item, .info_guarantees_item, .info_vendor_code, .info_size_item, .question_button_title, .info_material {
+        font-size: 14px;
+    }
+    .info_price {
+        font-size: 22px;
+    }
+
+}
+
+@media screen and (max-width: 712px) {
+    .detail {
+        flex-wrap: wrap;
+    }
 }

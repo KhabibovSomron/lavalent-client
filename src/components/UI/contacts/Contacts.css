@@ -36,6 +36,7 @@
     padding-left: 8px;
     font-weight: 600;
     font-size: 16px;
+
 }
 
 .telegram {
@@ -54,4 +55,14 @@
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 480px) {
+    .social_media {
+        flex-direction: column;
+    }
+
+    .social_media > div {
+        margin: 16px 0 8px;
+    }
 }

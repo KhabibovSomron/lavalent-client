@@ -110,3 +110,18 @@
     cursor: default;
 }
 
+@media screen and (max-width: 1000px) {
+    .pager_body_pages_items, .pager_header, .page_active {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .pager_body_forward_text, .pager_body_back_text {
+        display: none;
+    }
+
+    .pager_body_forward, .pager_body_back {
+        margin: 0;
+    }
+}

@@ -15,9 +15,12 @@ const CategoryCards: FC<ICategoryCardsProps> = () => {
 
     return (
         <div className='category_cards'>
+            <div className='category_cards_container'>
             {categories.map((category, index) => 
                <Link to={`/${category.id}/brands/`} key={index} className="links"><Card image_link={category.image} title={category.title}/></Link> 
             )}
+            </div>
+            
         </div>
     )
 }

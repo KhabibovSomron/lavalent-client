@@ -70,16 +70,6 @@ export const fetchProductDetail = (product_id: number) =>async (dispatch:AppDisp
     }
 }
 
-export const fetchProductSizes = (product_id: number) =>async (dispatch:AppDispatch) => {
-    try {
-        dispatch(productDetailSlice.actions.productDetailFetching())
-        const res = await axios.get(PRODUCTSIZES_URL + `?product=${product_id}`)
-        dispatch(productDetailSlice.actions.productSizesFetchingSuccess(res.data))
-    } catch (e: any) {
-        dispatch(productDetailSlice.actions.productDetailFetchingFailed(e.message))
-    }
-}
-
 export const fetchFavoriteProducts = (products_id: number[], page: number) =>async (dispatch:AppDispatch) => {
     try {
         dispatch(productListSlice.actions.productListFetching())
