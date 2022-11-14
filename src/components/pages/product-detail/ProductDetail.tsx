@@ -1,6 +1,7 @@
 import { FC, useEffect, useState, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
+import useTitle from '../../../hooks/UseTitle'
 import { categoryListSlice } from '../../../redux/reducers/CategorySlices'
 import { fetchProductDetail, fetchProductImages } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
@@ -21,7 +22,6 @@ const ProductDetail: FC<IProductDetailProps> = () => {
     const product = useAppSelector(state => state.productDetail)
     const characteristics = product.productDetail.characteristic.split(".")
     const dispatch = useAppDispatch()
-    const [activeIndex, setActiveIndex] = useState(0)
     const [isHidden, setIsHidden] = useState(true)
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
     const ref: any = useRef(null)
@@ -38,16 +38,14 @@ const ProductDetail: FC<IProductDetailProps> = () => {
                 }
             })
         }
-    }, [dispatch, params])
-
-    useEffect(() => {
         if (ref) {
             window.scrollTo({
                 top: ref.current?.offsetTop,
                 behavior: 'smooth'
             })
         }
-    })
+    }, [dispatch, params])
+
 
     const category = useAppSelector(state => state.categoryList.categories.filter(item => item.id === Number(params.category_id)))
 
@@ -97,20 +95,14 @@ const ProductDetail: FC<IProductDetailProps> = () => {
         }
     }
 
-    return (
-        <div className='product_detail'>
-            {/* <div className="button_container">
-                    <div className="button left_border">
-                        <svg className='button_svg' viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M18.5 3.85l-8.9 9.02 8.9 9.27c.66.65.66 1.71 0 2.36-.67.65-1.74.65-2.4 0L6 14.06c-.33-.33-.5-.76-.5-1.18 0-.43.17-.86.5-1.18L16.1 1.49c.66-.65 1.74-.65 2.41 0 .66.65.66 1.71-.01 2.36z"></path></svg>
-                    </div>
-                    <div className="button right_border">
-                        <svg className='button_svg' viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 22.15l8.9-9.02-8.9-9.28c-.66-.65-.66-1.71 0-2.36.67-.65 1.74-.65 2.4 0L20 11.94c.33.33.5.76.5 1.18 0 .43-.17.86-.5 1.18L9.9 24.51c-.66.65-1.74.65-2.41 0-.66-.65-.66-1.71.01-2.36z"></path></svg>
-                    </div>
-            </div> */}
+    useTitle(`Артикул ${product.productDetail.vendor_code}`)
 
+    return (
+        <div className='product_detail' ref={ref}>
             <div className="detail">
                 <div className="detail_gallery">
                     <ImageSlider slides={images}/>
+                    {/* <ImageSliderVersion2 slides={images} /> */}
                 </div>
                 <div className="detail_info">
                     <div className='info_breadcrumbs'>

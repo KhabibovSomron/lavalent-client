@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
+import useTitle from '../../../hooks/UseTitle'
 import { fetchBrands } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
@@ -21,9 +22,12 @@ const Brands: FC<IBrandsProps> = () => {
     const brands = useAppSelector(state => state.brandList.brands)
     const dispatch = useAppDispatch()
 
+
     useEffect(() => {
         dispatch(fetchBrands(Number(params.category_id)))
     }, [params.category_id, dispatch])
+
+    useTitle(category[0]?.title)
 
     const links: IBreadCrumbs[] = [
         {

@@ -4,7 +4,7 @@ import { categoryListSlice } from "../reducers/CategorySlices";
 import { productDetailSlice } from "../reducers/ProductDetailSlices";
 import { productListSlice } from "../reducers/ProductSlices";
 import { AppDispatch } from "../Store";
-import { BRANDLIST_URL, CATEGORYLIST_URL, FAVORITE_PRODUCTS_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, PRODUCTSIZES_URL, RANDOM_PRODUCTS_URL, SEARCH_PRODUCT_URL } from "./endpoints";
+import { BRANDLIST_URL, CATEGORYLIST_URL, FAVORITE_PRODUCTS_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, RANDOM_PRODUCTS_URL, SEARCH_PRODUCT_URL } from "./endpoints";
 
 
 export const fetchCategories = () =>async (dispatch:AppDispatch) => {

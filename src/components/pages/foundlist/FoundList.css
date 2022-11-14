@@ -23,6 +23,15 @@
     flex-wrap: wrap;
     padding: 20px 0 32px;
 }
+
+.not_found {
+    text-align: center;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
 .search_find {
     width: 100%;
     display: flex;

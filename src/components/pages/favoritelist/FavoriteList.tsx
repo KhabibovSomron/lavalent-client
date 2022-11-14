@@ -1,6 +1,7 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
+import useTitle from '../../../hooks/UseTitle'
 import { fetchFavoriteProducts } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import { IFavoriteList } from '../../../redux/types/ProductType'
@@ -8,6 +9,7 @@ import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
 import Pager from '../../UI/pager/Pager'
 import ProductCard from '../../UI/product_card/ProductCard'
 import SaveButton from '../../UI/save_button/SaveButton'
+import { productLimit } from '../../utils/settings'
 import './FavoriteList.css'
 
 
@@ -20,12 +22,19 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
     const params = useParams()
     const productList = useAppSelector(state => state.productList.pages)
     const dispatch = useAppDispatch()
+    const ref: any = useRef(null)
 
     useEffect(() => {
         const list = localStorage.getItem('fav_list')
         if (list) {
             const obj: IFavoriteList = JSON.parse(list)
             dispatch(fetchFavoriteProducts(obj.products, 1))
+        }
+        if (ref) {
+            window.scrollTo({
+                top: ref.current.offsetTop,
+                behavior: 'smooth'
+            })
         }
     }, [ dispatch, params])
 
@@ -48,8 +57,10 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
         }
     ]
 
+    useTitle('Мое Избранное')
+
     return (
-        <div className='productlist'>
+        <div className='productlist' ref={ref}>
             <h1>Мое Избранное</h1>
             <BreadCrumbs links={links}  />
             <div className="products_container">
@@ -68,8 +79,8 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
                 </div>
                 )}
             </div>
-            {Math.round(productList.count / 2) > 1 ? 
-                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} />
+            {Math.round(productList.count / productLimit) > 1 ? 
+                <Pager limit={productLimit} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 
         </div>

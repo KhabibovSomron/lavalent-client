@@ -1,12 +1,14 @@
-import { ChangeEvent, FC, useEffect, useState, useRef } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
+import useTitle from '../../../hooks/UseTitle'
 import { fetchFoundProducts } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
 import Ordering from '../../UI/order/Ordering'
 import Pager from '../../UI/pager/Pager'
 import ProductCard from '../../UI/product_card/ProductCard'
+import { productLimit } from '../../utils/settings'
 import './FoundList.css'
 
 
@@ -38,7 +40,7 @@ const FoundList: FC<IFoundListProps> = () => {
             url: '/'
         },
         {
-            title: `Поиск: нашлось ${productList.count}`,
+            title: productList.count !== 0 ? `Поиск: нашлось ${productList.count}`: 'Поиск: ничего не нашлось',
             url: `/productlist/favorites/`
         }
     ]
@@ -51,6 +53,8 @@ const FoundList: FC<IFoundListProps> = () => {
         event.preventDefault()
         dispatch(fetchFoundProducts(keywords, 1, order))
     }
+
+    useTitle('Поиск товаров')
 
     return (
         <div className='productlist'>
@@ -67,21 +71,30 @@ const FoundList: FC<IFoundListProps> = () => {
                 
                 </div>
             </div>
+            {productList.count !== 0 ?
             <Ordering setValue={setOrder} value={order} />
-            <div className="products_container">
-                {productList.results.map((product, index) => 
-                    <Link to={`/${product.category}/${product.brand.title}/${product.brand.id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
-                    <ProductCard
-                        image_link={product.poster}
-                        material={product.material}
-                        vendor_code={product.vendor_code}
-                        price={product.price}
-                    />
-                </Link>
-                )}
-            </div>
-            {Math.round(productList.count / 2) > 1 ? 
-                <Pager limit={2} offset={productList.count} onClickHandler={onPaginationClick} />
+            : <></>
+            }
+            
+            { productList.count !== 0 ?
+                <div className="products_container">
+
+                    {productList.results.map((product, index) => 
+                        <Link to={`/${product.category}/${product.brand.title}/${product.brand.id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
+                            <ProductCard
+                                image_link={product.poster}
+                                material={product.material}
+                                vendor_code={product.vendor_code}
+                                price={product.price}
+                            />
+                        </Link>
+                    )
+                    }
+                </div>
+            : <div className='not_found'>По вашему запросу ничего не нашлось</div>
+            }
+            {Math.round(productList.count / productLimit) > 1 ? 
+                <Pager limit={productLimit} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 
         </div>
