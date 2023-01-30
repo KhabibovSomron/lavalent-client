@@ -9,8 +9,6 @@ import ProductList from "./components/pages/productlist/ProductList";
 import FavoriteList from "./components/pages/favoritelist/FavoriteList";
 import FoundList from "./components/pages/foundlist/FoundList";
 
-
-
 interface IAppProps {
 
 }

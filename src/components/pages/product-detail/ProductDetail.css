@@ -154,6 +154,12 @@
     margin-bottom: 30px;
 }
 
+.info_question_link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
 .info_show_all {
     color: #1A7AC4;
     font-size: 16px;

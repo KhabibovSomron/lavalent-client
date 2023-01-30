@@ -1,0 +1,108 @@
+.carousel {
+  position: relative;
+  width: 730px;
+  height: 730px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.images {
+  display: flex;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: none;
+ 
+}
+
+.images::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.images {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.slides {
+  display: flex;
+  transition: translate;
+  transition-property: transform;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  scroll-snap-align: start;
+  margin: 0 10px;
+}
+
+.dots_container {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  margin-bottom: 5px;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 2px 5px;
+  border-radius: 10px;
+}
+
+.slide_dot {
+  opacity: 0.4;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #757575;
+  margin: 3px;
+  cursor: pointer;
+  transition: 200ms opacity ease-in-out;
+}
+
+.slide_dot_active {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 1212px) {
+  .carousel {
+    width: 630px;
+    height: 630px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .carousel {
+    width: 530px;
+    height: 530px;
+  }  
+}
+
+@media screen and (max-width: 908px) {
+  .carousel {
+    width: 430px;
+    height: 430px;
+  }
+
+  .slide_dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media screen and (max-width: 814px) {
+  .carousel {
+    width: 330px;
+    height: 330px;
+  }
+}
+
+@media screen and (max-width: 712px) {
+  .carousel {
+    width: 100%;
+    height: 100%;
+  } 
+}

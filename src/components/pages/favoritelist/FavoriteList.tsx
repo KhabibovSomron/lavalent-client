@@ -43,6 +43,12 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
         if (list) {
             const obj: IFavoriteList = JSON.parse(list)
             dispatch(fetchFavoriteProducts(obj.products, page))
+            if (ref) {
+                window.scrollTo({
+                    top: ref.current.offsetTop,
+                    behavior: 'smooth'
+                })
+            }
         }
     }
 
@@ -79,7 +85,7 @@ const FavoriteList: FC<IFavoriteListProps> = () => {
                 </div>
                 )}
             </div>
-            {Math.round(productList.count / productLimit) > 1 ? 
+            {Math.ceil(productList.count / productLimit) > 1 ? 
                 <Pager limit={productLimit} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 

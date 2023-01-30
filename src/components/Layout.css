@@ -92,6 +92,10 @@
     stroke: var(--text_color);
 }
 
+.message_button_link {
+  text-decoration: none;
+}
+
 .message_button {
   position: fixed;
   bottom: 20px;

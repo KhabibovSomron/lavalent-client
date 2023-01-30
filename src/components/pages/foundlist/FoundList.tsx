@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { ChangeEvent, FC, useEffect, useState, useRef } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
 import useTitle from '../../../hooks/UseTitle'
 import { fetchFoundProducts } from '../../../redux/requests/ProductRequests'
@@ -24,14 +24,28 @@ const FoundList: FC<IFoundListProps> = () => {
     const [keywords, setKeywords] = useState<string>(String(params.keywords))
     const [isFocus, setIsFocus] = useState<boolean>(false)
     const [order, setOrder] = useState<string>('')
+    const myHistory = useNavigate()
+    const ref: any = useRef(null)
 
     useEffect(() => {
         setKeywords(String(params.keywords))
         dispatch(fetchFoundProducts(keywords, 1, order))
+        if (ref) {
+            window.scrollTo({
+                top: ref.current?.offsetTop,
+                behavior: 'smooth'
+            })
+        }
     }, [dispatch, params.keywords, order])
 
     const onPaginationClick = (page: number) => {
         dispatch(fetchFoundProducts(keywords, page, order))
+        if (ref) {
+            window.scrollTo({
+                top: ref.current.offsetTop,
+                behavior: 'smooth'
+            })
+        }
     }
 
     const links: IBreadCrumbs[] = [
@@ -52,12 +66,13 @@ const FoundList: FC<IFoundListProps> = () => {
     const onSubmit = (event: ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
         dispatch(fetchFoundProducts(keywords, 1, order))
+        myHistory(`/search/${keywords}/`)
     }
 
     useTitle('Поиск товаров')
 
     return (
-        <div className='productlist'>
+        <div className='productlist' ref={ref}>
             <h1>Поиск товаров</h1>
             <BreadCrumbs links={links}  />
             <div className='search_find'>
@@ -93,7 +108,7 @@ const FoundList: FC<IFoundListProps> = () => {
                 </div>
             : <div className='not_found'>По вашему запросу ничего не нашлось</div>
             }
-            {Math.round(productList.count / productLimit) > 1 ? 
+            {Math.ceil(productList.count / productLimit) > 1 ? 
                 <Pager limit={productLimit} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 

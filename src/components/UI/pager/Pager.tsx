@@ -23,7 +23,7 @@ const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit}) => {
 
     const pagesCount = useMemo(() =>  {
         const result = offset / limit
-        return Math.round(result)
+        return Math.ceil(result)
     }, [offset, limit])
 
     const pages: number[] = []

@@ -62,6 +62,13 @@ const ProductList: FC<IProductListProps> = () => {
         } else {
             dispatch(fetchProducts(Number(params.category_id), Number(params.brand_id), page, order))
         }
+
+        if (ref) {
+            window.scrollTo({
+                top: ref.current.offsetTop,
+                behavior: 'smooth'
+            })
+        }
         
     }
 
@@ -84,7 +91,7 @@ const ProductList: FC<IProductListProps> = () => {
                 </Link>
                 )}
             </div>
-            {Math.round(productList.count / productLimit) > 1 ? 
+            {Math.ceil(productList.count / productLimit) > 1 ? 
                 <Pager limit={productLimit} offset={productList.count} onClickHandler={onPaginationClick} />
             : <></>
             } 
