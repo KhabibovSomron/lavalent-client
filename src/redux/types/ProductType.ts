@@ -42,3 +42,7 @@ export interface IProductDetail {
 export interface IFavoriteList {
     products: number[]
 }
+
+export interface IOnlyIdProductList {
+    id: number
+}

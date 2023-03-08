@@ -10,12 +10,12 @@
     justify-content: center;
 }
 
-.random_card_image > img {
+.random_card_img {
     max-width: 267px;
-    height: 100%;
     object-fit: contain;
     transition: all .3s;
 }
+
 
 .random_card_title {
     width: 100%;
@@ -42,7 +42,7 @@
     .random_card_title {
         font-size: 16px;
     }
-    .random_card_image > img {
+    .random_card_img {
         max-width: 175px;
     }
 
@@ -52,7 +52,7 @@
     .random_card_title {
         font-size: 12px;
     }
-    .random_card_image > img {
+    .random_card_img {
         max-width: 150px;
     }
 }

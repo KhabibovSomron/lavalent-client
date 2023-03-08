@@ -6,13 +6,13 @@ import './Pager.css'
 interface IPagerProps {
     offset: number,
     limit: number,
-    onClickHandler: Function
+    setCurrentPage: Function,
 }
 
-const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit}) => {
+const Pager: FC<IPagerProps> = ({offset, setCurrentPage, limit}) => {
 
-    const [activePage, setActivePage] = useState(1)
     const [pageLimit, setPageLimit] = useState(window.innerWidth < 650 ? 3 : 7)
+    const [activePage, setActivePage] = useState(Number(localStorage.getItem('current_page')))
     window.addEventListener("resize", () => {
         if (window.innerWidth < 650) {
             setPageLimit(3)
@@ -31,8 +31,9 @@ const Pager: FC<IPagerProps> = ({offset, onClickHandler, limit}) => {
     createPages(pages, activePage, pagesCount, pageLimit)
 
     const onPageClickHandler = (page: number) => {
+        localStorage.setItem('current_page', String(page))
+        setCurrentPage(page)
         setActivePage(page)
-        onClickHandler(page)
     }
 
     return (

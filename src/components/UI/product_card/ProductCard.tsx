@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import LazyImage from '../lazy-image/LazyImage'
 import './ProductCard.css'
 
 
@@ -13,7 +14,7 @@ const ProductCard: FC<IProductCardProps> = ({price, vendor_code, image_link, mat
     return (
         <div className='product_card'>
             <div className='product_card_image'>
-                <img src={image_link} alt={`${vendor_code}`} />
+                <LazyImage src={image_link} alt={`${vendor_code}`} className='product_card_img' skeletonClassName='product_card_img_skeleton' />
             </div>
             {material !== 'none' ? <p className='product_card_subtitle'>{material}</p>: <></>} 
             <p className='product_card_subtitle'>Артикул {vendor_code}</p>

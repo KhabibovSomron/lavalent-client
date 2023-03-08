@@ -1,31 +1,73 @@
-import { FC, TouchEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState, UIEvent } from 'react'
 import { IImage } from '../../../redux/types/ProductType'
 import './ImageSlider2.css'
-
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import LazyImage from '../lazy-image/LazyImage'
 
 interface ImageSliderProps {
-    slides: IImage[]
+    slides: IImage[],
+    isLoading: boolean
 }
 
 let prevPosition = 0
 
-const ImageSlider: FC<ImageSliderProps> = ({slides}) => {
+const ImageSlider: FC<ImageSliderProps> = ({slides, isLoading}) => {
 
-    const [currentIndex, setCurrentIndex] = useState(1)
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [dotClick, setDotClick] = useState<boolean>(false)
     const ref: any = useRef(null)
-    const  [posX1, setPosX1] = useState<number>(0)
+    const sliderTrack: any = useRef(null)
+    let  posX1 = 0
+    let posInit = 0
     const [offset, setOffset] = useState<number>(0)
-    const [slideWidth, setSlideWidth] = useState<number>(0)
-    const [slideListWidth, setSlideListWidth] = useState<number>(0)
+    let posX2 = 0
+    let posY1 = 0
+    let posY2 = 0
+    const [isSwipe, setIsSwipe] = useState<boolean>(false)
+    const [isScroll, setIsScroll] = useState<boolean>(false)
+    const [allowSwipe, setAllowSwipe] = useState<boolean>(true)
+    const [transition, setTransition] = useState<boolean>(true)
+    const [nextTrf, setNextTrf] = useState<number>(0)
+    const [prevTrf, setPrevTrf] = useState<number>(0)
+    const trfRegExp = /([-0-9.]+(?=px))/
 
-    useEffect(() => {
+    const slideWidth = useMemo(() => {
         if (ref.current) {
-            setSlideWidth(ref.current.offsetWidth)
-            setSlideListWidth((ref.current.offsetWidth + 20) * slides.length)
+           return ref.current.offsetWidth
         }
+        return 0
+    }, [ref, slides])
+
+    const slideListWidth = useMemo(() => {
+        if (ref.current) {
+            return (ref.current.offsetWidth + 20) * slides.length
+        }
+        return 0 
     }, [ref, slides])
 
 
+    const lastTrf = useMemo(() => {
+        return (slides.length - 1) * slideWidth
+    }, [slides, slideWidth])
+
+    const posThreshold = useMemo (() => {
+        return slideWidth * 0.35
+    }, [slideWidth])
+    
+
+
+    useEffect(() => {
+        setCurrentIndex(0)
+        setOffset(0)
+    }, [ref, slides])
+
+    useEffect(() => {
+        
+    }, [dotClick])
+
+
+    
     // const goToNext = () => {
     //     const isEndOfArray = currentIndex === slides.length - 1
     //     const newIndex = isEndOfArray ? 0: currentIndex + 1
@@ -38,75 +80,68 @@ const ImageSlider: FC<ImageSliderProps> = ({slides}) => {
     //     setCurrentIndex(newIndex)
     // }
 
-    const onDotClick = (index: number) => {
-        setOffset(index * (slideWidth + 20))
-        setCurrentIndex(index + 1)
+    const onDotClick =  (index: number) => {
+        setCurrentIndex(index)
+
+        const listNode = sliderTrack.current
+
+        const imgNode = listNode.querySelectorAll('div')[index]
+        imgNode.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+            
+          });
     }
 
-    const swipeStart = (event: TouchEvent<HTMLDivElement>) => {
-        setPosX1(event.targetTouches[0].clientX)
-    }
+    let handle: string | number | NodeJS.Timeout | null | undefined = null
 
-    const swipeAction = (event: TouchEvent<HTMLDivElement>) => {
-        let translatePosition = Math.ceil(posX1 - event.targetTouches[0].clientX)
-        if (offset + (translatePosition - prevPosition) < 0) {
-            setOffset(0)
-        } else if (offset + (translatePosition - prevPosition) > slideListWidth  - (slideWidth + 20)) {
-            setOffset(slideListWidth - (slideWidth + 20))
-        } else {
-            setOffset(offset + (translatePosition - prevPosition))
-        }
-        prevPosition = translatePosition
-   }
+    const onScrollSlider = () => {
+    
+        if (handle) {
+            clearTimeout(handle);
+       }
+       handle = setTimeout(() => {
+            const scrollDistance = ref.current.scrollLeft
 
-   const swipeEnd = (event: TouchEvent<HTMLDivElement>) => {
-        prevPosition = 0
-        let index = 1
-        while (offset > index * (slideWidth + 20)) index += 1
-
-        const remains = offset - (index - 1) * (slideWidth + 20)
-
-        if (remains < (slideWidth) / 2) {
-            setOffset((index - 1) * (slideWidth + 20))
+            const index = Math.floor(scrollDistance / (slideWidth + 20))
+            
             setCurrentIndex(index)
-        } else {
-            setOffset(index * (slideWidth + 20))
-            setCurrentIndex(index + 1)
-        }
-   }
+       }, 66); 
+    }
 
     return (
         <section className='slider'>
-            <div className="carousel">
-                <div className="images" ref={ref}
-                    onTouchStart={swipeStart}
-                    onTouchMove={swipeAction}
-                    onTouchEnd={swipeEnd}
-                >
+            <div className="carousel" ref={ref} onScroll={onScrollSlider}>
                     <div className="slides"
-                    style={{
-                        transform: `translate3d(${offset * -1}px, 0px, 0px)`
-                    }}
+                    ref={sliderTrack}
                     >
-                        {slides.map((slide, index) =>
-                            <img src={slide.image} key={index} alt={`Product image #${index + 1}`} className='slide' />
-                        )}
+                        {
+                        
+                            isLoading ?
+                                
+                                <Skeleton className='slide-skeleton' />
+                            
+                            :
+                            slides.map((slide, index) =>
+                                <LazyImage src={slide.image} alt={`Product image #${index + 1}`} className='slide' skeletonClassName='slide-skeleton' key={index} />
+                            )
+                        }
                     </div>
-                </div>
-                {
+            </div>
+
+            {
                 slides.length > 1 ?
                     <div className="dots_container">
-                        {slides.map((slide, index) => {
+                        {slides.map((_ , index) => {
                             return (
-                                <div className={index === currentIndex - 1 ? "slide_dot slide_dot_active": "slide_dot"} onClick={(() => onDotClick(index))} key={index}>
+                                <div className={index === currentIndex ? "slide_dot slide_dot_active": "slide_dot"} onClick={(() => onDotClick(index))} key={index}>
                                 </div>
                             )
                         })}
                     </div>
                 : <></>
-                }
-            </div>
-            
+                
+            }
         </section>
     )
 }

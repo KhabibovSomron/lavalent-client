@@ -1,16 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProductDetail } from "../types/ProductType";
-
-interface IShortBrand {
-    id: number,
-    title: string
-}
+import { IOnlyIdProductList, IProductDetail } from "../types/ProductType";
 
 interface IProductDetailState {
     productDetail: IProductDetail,
-    brand: IShortBrand,
     isLoading: boolean,
-    error: string
+    error: string,
+    onlyIdProductList: IOnlyIdProductList[]
 }
 
 const initialState: IProductDetailState = {
@@ -22,20 +17,29 @@ const initialState: IProductDetailState = {
         characteristic: '',
         description: '',
         material: '',
-        sizes: []
-    },
-    brand: {
-        id: 0,
-        title: ''
+        sizes: [],
     },
     isLoading: false,
-    error: ''
+    error: '',
+    onlyIdProductList: []
 }
 
 export const productDetailSlice = createSlice({
     name: 'products',
     initialState,
     reducers: {
+
+        onlyIdProductListFetchingSuccess(state, action: PayloadAction<IOnlyIdProductList[]>) {
+            state.error = ''
+            state.isLoading = false
+            state.onlyIdProductList = action.payload
+        },
+
+        onlyIdListFetchingFailed(state, action: PayloadAction<string>) {
+            state.isLoading = false
+            state.error = action.payload
+        },
+
         productDetailFetching(state) {
             state.isLoading = true
             state.error = ''
@@ -51,11 +55,6 @@ export const productDetailSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
-        brandFetchingSuccess(state, action: PayloadAction<IShortBrand>) {
-            state.brand = action.payload
-            state.error = ''
-            state.isLoading = false
-        }
     }
 })
 

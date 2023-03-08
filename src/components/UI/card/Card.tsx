@@ -1,4 +1,6 @@
 import { FC } from 'react'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import LazyImage from '../lazy-image/LazyImage'
 import './Card.css'
 
 
@@ -11,7 +13,7 @@ const Card: FC<ICardProps> = ({image_link, title}) => {
     return (
         <div className='card'>
             <div className='card_image'>
-                <img src={image_link} alt="" />
+                <LazyImage className='card-img' src={image_link} alt='' skeletonClassName='card-img-skeleton' />
             </div>
             <h1 className='card_title'>{title}</h1>
         </div>

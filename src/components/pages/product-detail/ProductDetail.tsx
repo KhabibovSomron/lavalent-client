@@ -1,15 +1,16 @@
 import { FC, useEffect, useState, useRef } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks/ReduxHooks'
 import useTitle from '../../../hooks/UseTitle'
 import { categoryListSlice } from '../../../redux/reducers/CategorySlices'
-import { fetchProductDetail, fetchProductImages } from '../../../redux/requests/ProductRequests'
+import { fetchOnlyIdFoundProducts, fetchOnlyIdProducts, fetchProductDetail, fetchProductImages } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import { IFavoriteList } from '../../../redux/types/ProductType'
 import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
 import ImageSlider2 from '../../UI/image_slider_2/ImageSlider2'
 import './ProductDetail.css'
-
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 interface IProductDetailProps {
 
@@ -19,14 +20,19 @@ const ProductDetail: FC<IProductDetailProps> = () => {
 
     const params = useParams()
     const images = useAppSelector(state => state.productList.images)
+    const isImageLoading = useAppSelector(state => state.productList.isLoading)
     const product = useAppSelector(state => state.productDetail)
+    const isLoading = useAppSelector(state => state.productDetail.isLoading)
+    const onlyIdProductList = useAppSelector(state => state.productDetail.onlyIdProductList)
     const characteristics = product.productDetail.characteristic.split(".")
     const dispatch = useAppDispatch()
     const [isHidden, setIsHidden] = useState(true)
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
     const ref: any = useRef(null)
+    const [isEnable, setIsEnable] = useState(true)
 
     useEffect(() => {
+        setIsFavorite(false)
         dispatch(fetchProductImages(Number(params.product_id)))
         dispatch(fetchProductDetail(Number(params.product_id)))
         const list = localStorage.getItem('fav_list')
@@ -38,13 +44,27 @@ const ProductDetail: FC<IProductDetailProps> = () => {
                 }
             })
         }
+
+        const requestOptionsList = localStorage.getItem('request_options')
+        if (requestOptionsList) {
+            setIsEnable(true)
+            const requestOptions = JSON.parse(requestOptionsList)
+            if (requestOptions.type === 'productList')
+                dispatch(fetchOnlyIdProducts(Number(requestOptions.category_id), requestOptions.brand_id !== null ? Number(requestOptions.brand_id): null, requestOptions.order))
+            else if (requestOptions.type === 'foundProducts') {
+                dispatch(fetchOnlyIdFoundProducts(requestOptions.keywords, requestOptions.order))
+            } else if (requestOptions.type === 'none') {
+                setIsEnable(false)
+            }   
+        }
+
         if (ref) {
             window.scrollTo({
-                top: ref.current?.offsetTop,
+                top: ref.current?.offsetTop - 100,
                 behavior: 'smooth'
             })
         }
-    }, [dispatch, params])
+    }, [params])
 
 
     const category = useAppSelector(state => state.categoryList.categories.filter(item => item.id === Number(params.category_id)))
@@ -97,49 +117,120 @@ const ProductDetail: FC<IProductDetailProps> = () => {
 
     useTitle(`Артикул ${product.productDetail.vendor_code}`)
 
+    const navigate = useNavigate()
+
+    const onNextButtonClick = () => {
+        let i = 0
+        while (product.productDetail.id !== onlyIdProductList[i].id) 
+            i++
+        
+        if (i + 1 === onlyIdProductList.length)
+            i = 0
+        else
+            i++
+
+        navigate(`/${params.category_id}/${params.title}/${params.brand_id}/product-detail/${onlyIdProductList[i].id}/`)
+    }
+
+    const onPrevButtonClick = () => {
+        let i = 0
+        while (product.productDetail.id !== onlyIdProductList[i].id) 
+            i++
+        
+        if (i - 1 < 0)
+            i = onlyIdProductList.length - 1
+        else
+            i--
+            
+        navigate(`/${params.category_id}/${params.title}/${params.brand_id}/product-detail/${onlyIdProductList[i].id}/`)
+    }
+
     return (
         <div className='product_detail' ref={ref}>
+            <div className="nav_buttons" style={isEnable ? {display: 'flex'}: {display: "none"}}>
+                <div className="nav_prev_button button" onClick={onPrevButtonClick}>
+                    <svg className='button_svg' width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M18.5 3.85l-8.9 9.02 8.9 9.27c.66.65.66 1.71 0 2.36-.67.65-1.74.65-2.4 0L6 14.06c-.33-.33-.5-.76-.5-1.18 0-.43.17-.86.5-1.18L16.1 1.49c.66-.65 1.74-.65 2.41 0 .66.65.66 1.71-.01 2.36z"></path></svg>
+                </div>
+                <div className="nav_next_button button" onClick={onNextButtonClick}>
+                    <svg className='button_svg' width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 22.15l8.9-9.02-8.9-9.28c-.66-.65-.66-1.71 0-2.36.67-.65 1.74-.65 2.4 0L20 11.94c.33.33.5.76.5 1.18 0 .43-.17.86-.5 1.18L9.9 24.51c-.66.65-1.74.65-2.41 0-.66-.65-.66-1.71.01-2.36z"></path></svg>
+                </div>
+            </div>
             <div className="detail">
                 <div className="detail_gallery">
-                    <ImageSlider2 slides={images}/>
+                    <ImageSlider2 slides={images} isLoading={isImageLoading}/>
                     {/* <ImageSliderVersion2 slides={images} /> */}
                 </div>
                 <div className="detail_info">
                     <div className='info_breadcrumbs'>
-                        <BreadCrumbs links={links}/>
+                        {
+                            isLoading ?
+                                <Skeleton />
+                            :
+                                <BreadCrumbs links={links}/>
+                        }
                     </div>
 
                     {product.productDetail.material !== 'none' ?
                         <div className="info_material">
-                            {product.productDetail.material}
+                            {
+                                isLoading ?
+                                    <Skeleton />
+                                :
+                                    product.productDetail.material
+                            }
                         </div>:
                         <></>
                     }
+                    {
+                       isLoading ?
+        
+                            <Skeleton />
+        
+                        :
 
-                    <div className="info_vendor_code">
-                        Артикул {product.productDetail.vendor_code}
-                    </div>
+                            <div className="info_vendor_code">
+                                Артикул {product.productDetail.vendor_code}
+                            </div>
+                    }
 
+                    
                     <div className="info_price">
-                        €{product.productDetail.price}
+                        {
+                            isLoading ?
+                                <Skeleton height={22} width={100} />
+                            :
+                                `€${product.productDetail.price}`
+                        }
+                        
                     </div>
+                    
+                   
 
                     <div className="info_size">
                         <span className='info_size_title'>Размер:</span>
-                        {product.productDetail.sizes.map((size, index) => 
-                            <span className="info_size_item" key={index}>{size}</span>
-                        )}
+                        {
+                            isLoading ?
+                                <Skeleton height={16} width={100} />
+                            :
+                                product.productDetail.sizes.map((size, index) => 
+                                    <span className="info_size_item" key={index}>{size}</span>
+                                ) 
+                        }
                     </div>
 
                     <div className={isHidden ? "info_product info_product_hidden": "info_product"}>
                         <span className="info_product_title">Информация о товаре</span>
-                        <span className="info_product_brand">Бренд: {product.productDetail.brand}</span>
-                        {product.productDetail.description.toLowerCase() !== 'none' ?
-                            <span className="info_product_description">
-                                {product.productDetail.description}
-                            </span>
-                        :
-                            <></>
+                        <span className="info_product_brand">Бренд: {isLoading ? <Skeleton width={140} /> : product.productDetail.brand}</span>
+                        {
+                            isLoading ?
+                                <Skeleton count={5} style={{marginBottom: '4px'}} />
+                            :
+                                product.productDetail.description.toLowerCase() !== 'none' ?
+                                    <span className="info_product_description">
+                                        {product.productDetail.description}
+                                    </span>
+                                :
+                                    <></>
                         }
                         {product.productDetail.characteristic.toLowerCase() !== "none" ?
                             <span className="info_product_characteristic">Характеристики</span>
@@ -151,20 +242,24 @@ const ProductDetail: FC<IProductDetailProps> = () => {
                             :
                             <></>
                         }
-                        { product.productDetail.characteristic.toLowerCase() !== "none" ?
-                            <ul className='info_product_characteristic_list'>
-                                {characteristics.map((item, index) => 
-                                    {
-                                        if(index !== characteristics.length - 1) {
-                                            return <li className='characteristic_item' key={index}>{item}</li>
-                                        } else {
-                                            return <div key={index}></div>
-                                        }
-                                    }
-                                )}
-                            </ul>
-                        :
-                            <></>
+                        { 
+                            isLoading ?
+                                <Skeleton count={5} style={{marginBottom: '4px'}} />
+                            :
+                                product.productDetail.characteristic.toLowerCase() !== "none" ?
+                                    <ul className='info_product_characteristic_list'>
+                                        {characteristics.map((item, index) => 
+                                            {
+                                                if(index !== characteristics.length - 1) {
+                                                    return <li className='characteristic_item' key={index}>{item}</li>
+                                                } else {
+                                                    return <div key={index}></div>
+                                                }
+                                            }
+                                        )}
+                                    </ul>
+                                :
+                                    <></>
                         }
 
                         <p className='info_connect'>
@@ -234,10 +329,10 @@ const ProductDetail: FC<IProductDetailProps> = () => {
                         <span className="info_question_title">Сохраните этот товар в закладках</span>
                         <button className='info_question_button' onClick={() => onSaveClickHandler(product.productDetail.id)}>
                             <span className="question_button_svg">
-                                {!isFavorite ?
-                                    <svg viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M11.363 16.152a.531.531 0 0 0-.013-.013l.013.013zm-.713-.013l.012-.011a.405.405 0 0 0-.012.011zm4.854-4.674a6.124 6.124 0 0 0 .781-.908c.453-.647.715-1.3.715-1.9C17 6.924 16.055 6 14.266 6c-.786 0-1.724.57-2.563 1.4L11 8.092l-.703-.694C9.458 6.57 8.52 6 7.734 6 5.945 6 5 6.925 5 8.656c0 1.043.776 2.167 1.476 2.78L11 15.803l4.504-4.337zM18 8.656c0 1.875-1.719 3.446-1.79 3.516l-4.866 4.687A.485.485 0 0 1 11 17a.485.485 0 0 1-.344-.14l-4.875-4.704C5.72 12.102 4 10.531 4 8.656 4 6.367 5.398 5 7.734 5 9.102 5 10.383 6.078 11 6.688 11.617 6.077 12.898 5 14.266 5 16.602 5 18 6.367 18 8.656z" fillRule="evenodd"></path></svg>
-                                :
+                                {isFavorite ?
                                     <svg className='save_button_svg' viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M18 8.656c0 1.875-1.719 3.446-1.79 3.516l-4.866 4.687A.485.485 0 0 1 11 17a.485.485 0 0 1-.344-.14l-4.875-4.704C5.72 12.102 4 10.531 4 8.656 4 6.367 5.398 5 7.734 5 9.102 5 10.383 6.078 11 6.688 11.617 6.077 12.898 5 14.266 5 16.602 5 18 6.367 18 8.656z" fillRule="evenodd"></path></svg>
+                                    :
+                                    <svg viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M11.363 16.152a.531.531 0 0 0-.013-.013l.013.013zm-.713-.013l.012-.011a.405.405 0 0 0-.012.011zm4.854-4.674a6.124 6.124 0 0 0 .781-.908c.453-.647.715-1.3.715-1.9C17 6.924 16.055 6 14.266 6c-.786 0-1.724.57-2.563 1.4L11 8.092l-.703-.694C9.458 6.57 8.52 6 7.734 6 5.945 6 5 6.925 5 8.656c0 1.043.776 2.167 1.476 2.78L11 15.803l4.504-4.337zM18 8.656c0 1.875-1.719 3.446-1.79 3.516l-4.866 4.687A.485.485 0 0 1 11 17a.485.485 0 0 1-.344-.14l-4.875-4.704C5.72 12.102 4 10.531 4 8.656 4 6.367 5.398 5 7.734 5 9.102 5 10.383 6.078 11 6.688 11.617 6.077 12.898 5 14.266 5 16.602 5 18 6.367 18 8.656z" fillRule="evenodd"></path></svg>
                                 }
                                 
                             </span>

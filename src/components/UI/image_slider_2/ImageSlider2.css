@@ -1,41 +1,33 @@
-.carousel {
+.slider {
   position: relative;
+  display: flex;
+  justify-content: center;
+}
+.carousel {
   width: 730px;
   height: 730px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
 }
 
-.images {
-  display: flex;
-  margin: 0 auto;
-  overflow: hidden;
-  touch-action: none;
- 
-}
-
-.images::-webkit-scrollbar {
+.carousel::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.images {
+.carousel {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
 .slides {
   display: flex;
-  transition: translate;
-  transition-property: transform;
-  transition-duration: 300ms;
-  transition-timing-function: ease-in-out;
 }
 
 .slide {
-  width: 100%;
-  height: 100%;
+  width: 730px;
+  height: 730px;
   object-fit: contain;
   object-position: center;
   scroll-snap-align: start;
@@ -50,6 +42,7 @@
   background-color: rgba(255, 255, 255, 0.6);
   padding: 2px 5px;
   border-radius: 10px;
+  z-index: 10;
 }
 
 .slide_dot {
@@ -72,6 +65,11 @@
     width: 630px;
     height: 630px;
   }
+
+  .slide {
+    width: 630px;
+    height: 630px;
+  }
 }
 
 @media screen and (max-width: 1000px) {
@@ -79,6 +77,11 @@
     width: 530px;
     height: 530px;
   }  
+
+  .slide {
+    width: 530px;
+    height: 530px;
+  }
 }
 
 @media screen and (max-width: 908px) {
@@ -91,18 +94,52 @@
     width: 10px;
     height: 10px;
   }
+
+  .slide {
+    width: 430px;
+    height: 430px;
+  }
+
 }
 
-@media screen and (max-width: 814px) {
+@media screen and (max-width: 712px) {
   .carousel {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .carousel {
+    width: 330px;
+    height: 330px;
+  }
+
+  .slide {
     width: 330px;
     height: 330px;
   }
 }
 
-@media screen and (max-width: 712px) {
+@media screen and (max-width: 400px) {
   .carousel {
-    width: 100%;
-    height: 100%;
-  } 
+    width: 300px;
+    height: 300px;
+  }
+
+  .slide {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .carousel {
+    width: 280px;
+    height: 280px;
+  }
+
+  .slide {
+    width: 280px;
+    height: 280px;
+  }
 }

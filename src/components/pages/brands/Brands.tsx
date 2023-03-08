@@ -6,6 +6,8 @@ import { fetchBrands } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
 import Card from '../../UI/card/Card'
+import CardSkeleton from '../../UI/card_skeleton/CardSkeleton'
+import { pageReset } from '../../utils/pageCreator'
 import './Brands.css'
 
 
@@ -20,12 +22,13 @@ const Brands: FC<IBrandsProps> = () => {
     const category = useAppSelector(state => state.categoryList.categories.filter(item => item.id === Number(params.category_id)))
 
     const brands = useAppSelector(state => state.brandList.brands)
+    const isLoading = useAppSelector(state => state.brandList.isLoading)
     const dispatch = useAppDispatch()
 
 
     useEffect(() => {
         dispatch(fetchBrands(Number(params.category_id)))
-    }, [params.category_id, dispatch])
+    }, [params.category_id])
 
     useTitle(category[0]?.title)
 
@@ -45,9 +48,18 @@ const Brands: FC<IBrandsProps> = () => {
                 <h1>{category[0]?.title}</h1>
                 <BreadCrumbs links={links} />
                 <div className="brands_container">
-                    {brands.map((brand, index) =>
-                        <Link to={`/${params.category_id}/${brand.title}/${brand.id}/product-list/`} key={index} className='brand_links' ><Card image_link={brand.image} title={brand.title}/></Link>
-                    )}
+                    {
+                        isLoading ?
+                            Array(9).fill(0).map(( _ , index) =>
+                                <CardSkeleton key={index} />
+                            )
+                        
+                        :
+
+                            brands.map((brand, index) =>
+                                <Link to={`/${params.category_id}/${brand.title}/${brand.id}/product-list/`} key={index} className='brand_links' onClick={pageReset} ><Card image_link={brand.image} title={brand.title}/></Link>
+                            )
+                    }
                 </div>
         </div>
     )

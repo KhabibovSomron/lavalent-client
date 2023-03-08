@@ -18,3 +18,7 @@ export function createPages(pages: number[], currentPage:number, pagesCount: num
         }
     }
 }
+
+export const pageReset = () => {
+    localStorage.setItem('current_page', '1')
+}

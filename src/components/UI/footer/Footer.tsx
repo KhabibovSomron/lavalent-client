@@ -40,7 +40,7 @@ const Footer: FC<IFooterProps> = () => {
                     </a>
                 </div>
                 <div className="copyright">
-                    <span className='copyright_store'>© Copyright 2019-2022 Lavalent LLC. All rights reserved</span>
+                    <span className='copyright_store'>© Copyright 2019-2025 Lavalent LLC. All rights reserved</span>
                     <span className='copyright_abuse_report'><a href='mailto:lavalent.eu@gmail.com'>Сообщить о нарушении</a></span>
                 </div>
             </div>

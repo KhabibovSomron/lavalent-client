@@ -1,13 +1,15 @@
-import { FC } from "react"
+import { FC, lazy } from "react"
 import { Route, Routes } from "react-router-dom";
-import './App.css'
-import Brands from "./components/pages/brands/Brands";
-import CategoryCards from "./components/UI/category_cards/CategoryCards";
-import Layout from "./components/Layout";
-import ProductDetail from "./components/pages/product-detail/ProductDetail";
-import ProductList from "./components/pages/productlist/ProductList";
-import FavoriteList from "./components/pages/favoritelist/FavoriteList";
-import FoundList from "./components/pages/foundlist/FoundList";
+import './App.css';
+
+
+const CategoryCards = lazy(() => import("./components/UI/category_cards/CategoryCards"))
+const Brands = lazy(() => import("./components/pages/brands/Brands"))
+const ProductDetail = lazy(() => import("./components/pages/product-detail/ProductDetail"))
+const ProductList = lazy(() => import("./components/pages/productlist/ProductList"))
+const FavoriteList = lazy(() => import("./components/pages/favoritelist/FavoriteList"))
+const FoundList = lazy(() => import("./components/pages/foundlist/FoundList"))
+const Layout = lazy(() => import("./components/Layout"))
 
 interface IAppProps {
 

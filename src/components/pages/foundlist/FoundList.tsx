@@ -5,6 +5,7 @@ import useTitle from '../../../hooks/UseTitle'
 import { fetchFoundProducts } from '../../../redux/requests/ProductRequests'
 import { IBreadCrumbs } from '../../../redux/types/BreadCrumbsType'
 import BreadCrumbs from '../../UI/breadcrumbs/BreadCrumbs'
+import CardSkeleton from '../../UI/card_skeleton/CardSkeleton'
 import Ordering from '../../UI/order/Ordering'
 import Pager from '../../UI/pager/Pager'
 import ProductCard from '../../UI/product_card/ProductCard'
@@ -20,33 +21,43 @@ const FoundList: FC<IFoundListProps> = () => {
 
     const params = useParams()
     const productList = useAppSelector(state => state.productList.pages)
+    const isLoading = useAppSelector(state => state.productList.isLoading)
     const dispatch = useAppDispatch()
     const [keywords, setKeywords] = useState<string>(String(params.keywords))
     const [isFocus, setIsFocus] = useState<boolean>(false)
     const [order, setOrder] = useState<string>('')
     const myHistory = useNavigate()
     const ref: any = useRef(null)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+
+    const setLocalStorage = (localKeyword: string, order: string) => {
+        const localStorageData = {
+            type: 'foundProducts',
+            keywords: localKeyword,
+            order: order
+        }
+
+        localStorage.setItem('request_options', JSON.stringify(localStorageData))
+    }
 
     useEffect(() => {
-        setKeywords(String(params.keywords))
-        dispatch(fetchFoundProducts(keywords, 1, order))
-        if (ref) {
-            window.scrollTo({
-                top: ref.current?.offsetTop,
-                behavior: 'smooth'
-            })
-        }
-    }, [dispatch, params.keywords, order])
+        let localStorageData = {}
+        const page = localStorage.getItem('current_page')
+        if (page) {
+            setKeywords(String(params.keywords))
 
-    const onPaginationClick = (page: number) => {
-        dispatch(fetchFoundProducts(keywords, page, order))
-        if (ref) {
-            window.scrollTo({
-                top: ref.current.offsetTop,
-                behavior: 'smooth'
-            })
+            setLocalStorage(String(params.keywords), order)
+            
+            dispatch(fetchFoundProducts(keywords, Number(page), order))
+            if (ref) {
+                window.scrollTo({
+                    top: ref.current?.offsetTop,
+                    behavior: 'smooth'
+                })
+            }
         }
-    }
+    }, [params.keywords, order, currentPage])
+
 
     const links: IBreadCrumbs[] = [
         {
@@ -65,6 +76,9 @@ const FoundList: FC<IFoundListProps> = () => {
 
     const onSubmit = (event: ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
+
+        setLocalStorage(keywords, order)
+        localStorage.setItem('current_page', '1')
         dispatch(fetchFoundProducts(keywords, 1, order))
         myHistory(`/search/${keywords}/`)
     }
@@ -91,25 +105,32 @@ const FoundList: FC<IFoundListProps> = () => {
             : <></>
             }
             
-            { productList.count !== 0 ?
                 <div className="products_container">
 
-                    {productList.results.map((product, index) => 
-                        <Link to={`/${product.category}/${product.brand.title}/${product.brand.id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
-                            <ProductCard
-                                image_link={product.poster}
-                                material={product.material}
-                                vendor_code={product.vendor_code}
-                                price={product.price}
-                            />
-                        </Link>
-                    )
+                    {
+                        isLoading ?
+                        Array(4).fill(0).map(( _ , index) => 
+                            <CardSkeleton key={index} />
+                        )
+                    :
+                        productList.count !== 0 ?
+
+                            productList.results.map((product, index) => 
+                                <Link to={`/${product.category}/${product.brand.title}/${product.brand.id}/product-detail/${product.id}/`} style={{textDecoration: 'none'}} key={index}>
+                                    <ProductCard
+                                        image_link={product.poster}
+                                        material={product.material}
+                                        vendor_code={product.vendor_code}
+                                        price={product.price}
+                                    />
+                                </Link>
+                            )
+                        : <div className='not_found'>По вашему запросу ничего не нашлось</div>
+
                     }
                 </div>
-            : <div className='not_found'>По вашему запросу ничего не нашлось</div>
-            }
             {Math.ceil(productList.count / productLimit) > 1 ? 
-                <Pager limit={productLimit} offset={productList.count} onClickHandler={onPaginationClick} />
+                <Pager limit={productLimit} offset={productList.count} setCurrentPage={setCurrentPage} />
             : <></>
             } 
         </div>

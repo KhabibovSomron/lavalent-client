@@ -10,9 +10,8 @@
     justify-content: center;
 }
 
-.product_card_image > img {
+.product_card_img {
     max-width: 220px;
-    height: 100%;
     object-fit: contain;
     transition: all .3s;
 }
@@ -55,7 +54,7 @@
     .product_card_title {
         font-size: 16px;
     }
-    .product_card_image > img {
+    .product_card_img {
         max-width: 160px;
     }
 
@@ -69,13 +68,14 @@
     .card_title {
         font-size: 12px;
     }
-    .product_card_image > img {
+    .product_card_img {
         max-width: 135px;
     }
     
     .product_card {
         max-width: 150px;
     }
+
 }
 
 

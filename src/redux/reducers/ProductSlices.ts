@@ -7,6 +7,7 @@ interface IProductState {
     images: IImage[],
     random_products: IProduct[],
     isLoading: boolean,
+    isRandomProductLoading: boolean,
     error: string
 }
 
@@ -20,6 +21,7 @@ const initialState: IProductState = {
     images: [],
     random_products: [],
     isLoading: false,
+    isRandomProductLoading: false,
     error: ''
 }
 
@@ -48,10 +50,19 @@ export const productListSlice = createSlice({
             state.isLoading = false
         },
 
+        randomProductFetching(state) {
+            state.isRandomProductLoading = true
+        },
+
         randomProductsFetchingSuccess(state, action: PayloadAction<IProduct[]>) {
             state.error = ''
             state.random_products = action.payload
-            state.isLoading = false
+            state.isRandomProductLoading = false
+        },
+
+        randomProductFetchingFailed(state, action: PayloadAction<string>) {
+            state.isRandomProductLoading = false
+            state.error = action.payload
         }
     }
 })

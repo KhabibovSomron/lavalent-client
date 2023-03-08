@@ -4,7 +4,7 @@ import { categoryListSlice } from "../reducers/CategorySlices";
 import { productDetailSlice } from "../reducers/ProductDetailSlices";
 import { productListSlice } from "../reducers/ProductSlices";
 import { AppDispatch } from "../Store";
-import { BRANDLIST_URL, CATEGORYLIST_URL, FAVORITE_PRODUCTS_URL, IMAGESLIST_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, RANDOM_PRODUCTS_URL, SEARCH_PRODUCT_URL } from "./endpoints";
+import { BRANDLIST_URL, CATEGORYLIST_URL, FAVORITE_PRODUCTS_URL, IMAGESLIST_URL, ONLY_ID_PRODUCTLIST, ONLY_ID_SEARCH_PRODUCT_URL, PRODUCTDETAIL_URL, PRODUCTLIST_URL, RANDOM_PRODUCTS_URL, SEARCH_PRODUCT_URL } from "./endpoints";
 
 
 export const fetchCategories = () =>async (dispatch:AppDispatch) => {
@@ -119,10 +119,47 @@ export const fetchFoundProducts = (keywords: string, page: number, ordering: str
 
 export const fetchRandomProducts = () => async (dispatch:AppDispatch) => {
     try {
-        dispatch(productListSlice.actions.productListFetching())
+        dispatch(productListSlice.actions.randomProductFetching())
         const res = await axios.get(RANDOM_PRODUCTS_URL)
         dispatch(productListSlice.actions.randomProductsFetchingSuccess(res.data))
     } catch (e: any) {
-        dispatch(productListSlice.actions.productListFetchingFailed(e.message))
+        dispatch(productListSlice.actions.randomProductFetchingFailed(e.message))
+    }
+}
+
+export const fetchOnlyIdProducts = (category_id:number, brand_id: number | null, ordering: string) =>async (dispatch:AppDispatch) => {
+    try {
+        dispatch(productDetailSlice.actions.productDetailFetching())
+        let url = ONLY_ID_PRODUCTLIST + `?category=${category_id}`
+        if (brand_id !== null) {
+            url += `&brand=${brand_id}`
+        }
+
+        if (ordering) {
+            url += `&ordering=${ordering}`
+        }
+        const response = await axios.get(url)
+        dispatch(productDetailSlice.actions.onlyIdProductListFetchingSuccess(response.data))
+
+    } catch (e: any) {
+        dispatch(productDetailSlice.actions.onlyIdListFetchingFailed(e.message))
+    }
+}
+
+export const fetchOnlyIdFoundProducts = (keywords: string, ordering: string) =>async (dispatch:AppDispatch) => {
+    try {
+        dispatch(productDetailSlice.actions.productDetailFetching())
+        let url = ONLY_ID_SEARCH_PRODUCT_URL + '?'
+
+        if (ordering) {
+            url += `ordering=${ordering}`
+        }
+
+        url += `&search=${keywords.trim().toLocaleLowerCase()}`
+
+        const res = await axios.get(url)
+        dispatch(productDetailSlice.actions.onlyIdProductListFetchingSuccess(res.data))
+    } catch (e: any) {
+        dispatch(productDetailSlice.actions.onlyIdListFetchingFailed(e.message))
     }
 }

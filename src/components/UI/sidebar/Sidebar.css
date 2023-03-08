@@ -42,3 +42,9 @@
     background-color: var(--text_color);
     color: white;
 }
+
+.sidebar_links_skeleton {
+    margin: 16px;
+    width: 120px;
+    height: 16px;
+}
