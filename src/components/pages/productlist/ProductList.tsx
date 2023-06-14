@@ -43,7 +43,7 @@ const ProductList: FC<IProductListProps> = () => {
             } else {
                 dispatch(fetchProducts(Number(params.category_id), Number(params.brand_id), Number(page), order))
                 localStorageData = {
-                    type: 'productlist',
+                    type: 'productList',
                     category_id: params.category_id,
                     brand_id: params.brand_id,
                     order: order
